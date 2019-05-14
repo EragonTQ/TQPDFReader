@@ -7,7 +7,7 @@
 //
 
 #import "PDFOtherViewTools.h"
-#import "PDFReader.h"
+#import "TQPDFReader.h"
 @implementation PDFOtherViewTools
 + (void)loadHistoryView:(UIView *)containerView withCurrentPage:(NSInteger)pageIndex{
     if (pageIndex <= 1) {

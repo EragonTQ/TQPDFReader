@@ -14,11 +14,13 @@ Pod::Spec.new do |s|
   s.license      = "MIT"
   s.author       = { "litianqi" => "871651575@qq.com" }
   s.platform     = :ios, "8.0"
-
+s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
 s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
   s.source_files  = "TQPDFReader/**/*.{h,m}"
 
-  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","PDFReader/Resources/*.xcassets"
+  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.xcassets"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
+  s.dependency "CocoaLumberjack", '~> 2.0'
+  s.dependency "FDFullscreenPopGesture"
  end

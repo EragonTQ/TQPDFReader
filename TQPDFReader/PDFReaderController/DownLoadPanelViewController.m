@@ -10,7 +10,7 @@
 #import "PDFReaderDownloadManager.h"
 #import "PDFReaderProgressBarView.h"
 #import "PDFReaderFileManager.h"
-#import "PDFReader.h"
+#import "TQPDFReader.h"
 
 @interface DownLoadPanelViewController ()<PDFReaderDownloadManagerDelegate>
 @property (nonatomic,weak) IBOutlet UILabel *currentProgressLabel;

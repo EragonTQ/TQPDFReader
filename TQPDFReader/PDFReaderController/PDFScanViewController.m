@@ -11,7 +11,7 @@
 #import "DownLoadPanelViewController.h"
 #import "PDFReaderDownloadManager.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
-#import "PDFReader.h"
+#import "TQPDFReader.h"
 #import "PDFShareTools.h"
 #import "PDFOtherViewTools.h"
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
