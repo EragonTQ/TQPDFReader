@@ -15,8 +15,7 @@ Pod::Spec.new do |s|
   s.author       = { "litianqi" => "871651575@qq.com" }
   s.platform     = :ios, "8.0"
 s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
-#s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
- s.source                = {:path => "."}
+s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
   s.source_files  = "TQPDFReader/**/*.{h,m}"
 
   s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"

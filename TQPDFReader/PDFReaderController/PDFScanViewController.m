@@ -15,7 +15,7 @@
 #import "PDFShareTools.h"
 #import "PDFOtherViewTools.h"
 #import <WebKit/WebKit.h>
-#import <Masonry.h>
+#import <Masonry/Masonry.h>
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
 static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 @interface HQ_UIActivityType:UIActivity
