@@ -1,0 +1,36 @@
+PODS:
+  - CocoaLumberjack (2.4.0):
+    - CocoaLumberjack/Default (= 2.4.0)
+    - CocoaLumberjack/Extensions (= 2.4.0)
+  - CocoaLumberjack/Core (2.4.0)
+  - CocoaLumberjack/Default (2.4.0):
+    - CocoaLumberjack/Core
+  - CocoaLumberjack/Extensions (2.4.0):
+    - CocoaLumberjack/Default
+  - FDFullscreenPopGesture (1.1)
+  - SVProgressHUD (2.2.5)
+  - TQPDFReader (0.0.1):
+    - CocoaLumberjack (~> 2.0)
+    - FDFullscreenPopGesture
+    - SVProgressHUD
+
+DEPENDENCIES:
+  - TQPDFReader
+
+SPEC REPOS:
+  https://github.com/cocoapods/specs.git:
+    - CocoaLumberjack
+    - FDFullscreenPopGesture
+    - SVProgressHUD
+  https://github.com/TianQiLi/TQRepo.git:
+    - TQPDFReader
+
+SPEC CHECKSUMS:
+  CocoaLumberjack: aa9dcab71bdf9eaf2a63bbd9ddc87863efe45457
+  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
+  SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
+  TQPDFReader: fb35e28b70eac245d1121b8d66d2d3e50450366a
+
+PODFILE CHECKSUM: 144b14d025d3413acf40e3ef26a835229bc7d909
+
+COCOAPODS: 1.7.5

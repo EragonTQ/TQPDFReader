@@ -3,21 +3,26 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
-		1C22B8B4231D13DE00E0FBCF /* TQPDFReader.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */; };
+		1C22B8B9231D18F000E0FBCF /* TQPDFReader in Resources */ = {isa = PBXBuildFile; fileRef = 1C22B8B7231D18F000E0FBCF /* TQPDFReader */; };
+		1C22B8BA231D18F000E0FBCF /* TQPDFReader.podspec in Resources */ = {isa = PBXBuildFile; fileRef = 1C22B8B8231D18F000E0FBCF /* TQPDFReader.podspec */; };
 		1C3B80C6228AC5CB00AEFCFE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */; };
 		1C3B80C9228AC5CB00AEFCFE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80C8228AC5CB00AEFCFE /* ViewController.m */; };
 		1C3B80CC228AC5CB00AEFCFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CA228AC5CB00AEFCFE /* Main.storyboard */; };
 		1C3B80CE228AC5CC00AEFCFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CD228AC5CC00AEFCFE /* Assets.xcassets */; };
 		1C3B80D1228AC5CC00AEFCFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CF228AC5CC00AEFCFE /* LaunchScreen.storyboard */; };
 		1C3B80D4228AC5CC00AEFCFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80D3228AC5CC00AEFCFE /* main.m */; };
+		1C6646E8231D316A0055DA55 /* test.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C6646E7231D316A0055DA55 /* test.m */; };
+		1CECE843231D1F2A00AD8171 /* 002.PDF in Resources */ = {isa = PBXBuildFile; fileRef = 1CECE842231D1F2A00AD8171 /* 002.PDF */; };
+		A69F605786F0935E84CC8CAB /* libPods-TQPDFReaderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 640919314C84E3708A953A68 /* libPods-TQPDFReaderDemo.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TQPDFReader.bundle; sourceTree = "<group>"; };
+		1C22B8B7231D18F000E0FBCF /* TQPDFReader */ = {isa = PBXFileReference; lastKnownFileType = folder; name = TQPDFReader; path = ../../TQPDFReader; sourceTree = "<group>"; };
+		1C22B8B8231D18F000E0FBCF /* TQPDFReader.podspec */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; name = TQPDFReader.podspec; path = ../../TQPDFReader.podspec; sourceTree = "<group>"; };
 		1C3B80C1228AC5CB00AEFCFE /* TQPDFReaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TQPDFReaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C3B80C4228AC5CB00AEFCFE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -28,6 +33,12 @@
 		1C3B80D0228AC5CC00AEFCFE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1C3B80D2228AC5CC00AEFCFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C3B80D3228AC5CC00AEFCFE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1C6646E6231D316A0055DA55 /* test.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = test.h; sourceTree = "<group>"; };
+		1C6646E7231D316A0055DA55 /* test.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = test.m; sourceTree = "<group>"; };
+		1CECE842231D1F2A00AD8171 /* 002.PDF */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 002.PDF; sourceTree = "<group>"; };
+		53E0774306492745386D53FB /* Pods-TQPDFReaderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TQPDFReaderDemo.debug.xcconfig"; path = "Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo.debug.xcconfig"; sourceTree = "<group>"; };
+		640919314C84E3708A953A68 /* libPods-TQPDFReaderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TQPDFReaderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		9BEB81222AC2B0BD993826B8 /* Pods-TQPDFReaderDemo.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TQPDFReaderDemo.release.xcconfig"; path = "Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -35,6 +46,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A69F605786F0935E84CC8CAB /* libPods-TQPDFReaderDemo.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -46,6 +58,8 @@
 			children = (
 				1C3B80C3228AC5CB00AEFCFE /* TQPDFReaderDemo */,
 				1C3B80C2228AC5CB00AEFCFE /* Products */,
+				1CDA31114F149EBD10A9C104 /* Pods */,
+				8CFBC28C7780A25B60DCA8EB /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -60,11 +74,15 @@
 		1C3B80C3228AC5CB00AEFCFE /* TQPDFReaderDemo */ = {
 			isa = PBXGroup;
 			children = (
+				1C22B8B7231D18F000E0FBCF /* TQPDFReader */,
+				1C22B8B8231D18F000E0FBCF /* TQPDFReader.podspec */,
 				1C3B80C4228AC5CB00AEFCFE /* AppDelegate.h */,
 				1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */,
+				1C6646E6231D316A0055DA55 /* test.h */,
+				1C6646E7231D316A0055DA55 /* test.m */,
 				1C3B80C7228AC5CB00AEFCFE /* ViewController.h */,
 				1C3B80C8228AC5CB00AEFCFE /* ViewController.m */,
-				1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */,
+				1CECE842231D1F2A00AD8171 /* 002.PDF */,
 				1C3B80CA228AC5CB00AEFCFE /* Main.storyboard */,
 				1C3B80CD228AC5CC00AEFCFE /* Assets.xcassets */,
 				1C3B80CF228AC5CC00AEFCFE /* LaunchScreen.storyboard */,
@@ -74,6 +92,23 @@
 			path = TQPDFReaderDemo;
 			sourceTree = "<group>";
 		};
+		1CDA31114F149EBD10A9C104 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				53E0774306492745386D53FB /* Pods-TQPDFReaderDemo.debug.xcconfig */,
+				9BEB81222AC2B0BD993826B8 /* Pods-TQPDFReaderDemo.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
+		8CFBC28C7780A25B60DCA8EB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				640919314C84E3708A953A68 /* libPods-TQPDFReaderDemo.a */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -81,9 +116,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1C3B80D7228AC5CC00AEFCFE /* Build configuration list for PBXNativeTarget "TQPDFReaderDemo" */;
 			buildPhases = (
+				0064D021B8C1C0DC674A0C99 /* [CP] Check Pods Manifest.lock */,
 				1C3B80BD228AC5CB00AEFCFE /* Sources */,
 				1C3B80BE228AC5CB00AEFCFE /* Frameworks */,
 				1C3B80BF228AC5CB00AEFCFE /* Resources */,
+				EBC5A20CF3ECA8949EB8F0F7 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -131,8 +168,10 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				1C22B8B4231D13DE00E0FBCF /* TQPDFReader.bundle in Resources */,
 				1C3B80D1228AC5CC00AEFCFE /* LaunchScreen.storyboard in Resources */,
+				1C22B8B9231D18F000E0FBCF /* TQPDFReader in Resources */,
+				1C22B8BA231D18F000E0FBCF /* TQPDFReader.podspec in Resources */,
+				1CECE843231D1F2A00AD8171 /* 002.PDF in Resources */,
 				1C3B80CE228AC5CC00AEFCFE /* Assets.xcassets in Resources */,
 				1C3B80CC228AC5CB00AEFCFE /* Main.storyboard in Resources */,
 			);
@@ -140,12 +179,55 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		0064D021B8C1C0DC674A0C99 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-TQPDFReaderDemo-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		EBC5A20CF3ECA8949EB8F0F7 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1C3B80BD228AC5CB00AEFCFE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 				1C3B80C9228AC5CB00AEFCFE /* ViewController.m in Sources */,
+				1C6646E8231D316A0055DA55 /* test.m in Sources */,
 				1C3B80D4228AC5CC00AEFCFE /* main.m in Sources */,
 				1C3B80C6228AC5CB00AEFCFE /* AppDelegate.m in Sources */,
 			);
@@ -287,11 +369,13 @@
 		};
 		1C3B80D8228AC5CC00AEFCFE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 53E0774306492745386D53FB /* Pods-TQPDFReaderDemo.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 76JSPN4743;
 				INFOPLIST_FILE = TQPDFReaderDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -304,11 +388,13 @@
 		};
 		1C3B80D9228AC5CC00AEFCFE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 9BEB81222AC2B0BD993826B8 /* Pods-TQPDFReaderDemo.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 76JSPN4743;
 				INFOPLIST_FILE = TQPDFReaderDemo/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
