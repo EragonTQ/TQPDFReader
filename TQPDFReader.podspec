@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "TQPDFReader"
-  s.version      = "0.0.1"
+  s.version      = "0.0.2"
   s.summary      = "pdf 阅读器."
   s.homepage     = "https://github.com/TianQiLi/TQPDFReader"
   s.license      = "MIT"
@@ -18,7 +18,7 @@ s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
 s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
   s.source_files  = "TQPDFReader/**/*.{h,m}"
 
-  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.xcassets"
+  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
   s.dependency "CocoaLumberjack", '~> 2.0'

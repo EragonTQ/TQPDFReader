@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C22B8B4231D13DE00E0FBCF /* TQPDFReader.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */; };
 		1C3B80C6228AC5CB00AEFCFE /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */; };
 		1C3B80C9228AC5CB00AEFCFE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80C8228AC5CB00AEFCFE /* ViewController.m */; };
 		1C3B80CC228AC5CB00AEFCFE /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CA228AC5CB00AEFCFE /* Main.storyboard */; };
@@ -16,6 +17,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = TQPDFReader.bundle; sourceTree = "<group>"; };
 		1C3B80C1228AC5CB00AEFCFE /* TQPDFReaderDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = TQPDFReaderDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		1C3B80C4228AC5CB00AEFCFE /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -62,6 +64,7 @@
 				1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */,
 				1C3B80C7228AC5CB00AEFCFE /* ViewController.h */,
 				1C3B80C8228AC5CB00AEFCFE /* ViewController.m */,
+				1C22B8B3231D13DE00E0FBCF /* TQPDFReader.bundle */,
 				1C3B80CA228AC5CB00AEFCFE /* Main.storyboard */,
 				1C3B80CD228AC5CC00AEFCFE /* Assets.xcassets */,
 				1C3B80CF228AC5CC00AEFCFE /* LaunchScreen.storyboard */,
@@ -128,6 +131,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C22B8B4231D13DE00E0FBCF /* TQPDFReader.bundle in Resources */,
 				1C3B80D1228AC5CC00AEFCFE /* LaunchScreen.storyboard in Resources */,
 				1C3B80CE228AC5CC00AEFCFE /* Assets.xcassets in Resources */,
 				1C3B80CC228AC5CB00AEFCFE /* Main.storyboard in Resources */,
