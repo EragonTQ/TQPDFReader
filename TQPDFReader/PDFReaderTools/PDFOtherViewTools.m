@@ -48,7 +48,9 @@
     NSInteger imgY = 178 * PDFReader_Screen_widthScale;
     UIImageView * imagV = [[UIImageView alloc] initWithFrame:CGRectMake(139, imgY, 97, 84)];
     [imagV setCenter:CGPointMake(viewError.frame.size.width/2, imagV.center.y)];
-    [imagV setImage:[UIImage imageNamed:@"icon_failure"]];
+    
+    
+    [imagV setImage:PDFReaderImage(@"icon_failure")];
     [viewError addSubview:imagV];
     
     UILabel * labelText = [[UILabel alloc] initWithFrame:CGRectMake(0,imagV.frame.origin.y +imagV.frame.size.height +12, 200, 13)];

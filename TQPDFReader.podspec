@@ -8,19 +8,21 @@
 
 Pod::Spec.new do |s|
   s.name         = "TQPDFReader"
-  s.version      = "0.0.2"
+  s.version      = "0.0.3"
   s.summary      = "pdf 阅读器."
   s.homepage     = "https://github.com/TianQiLi/TQPDFReader"
   s.license      = "MIT"
   s.author       = { "litianqi" => "871651575@qq.com" }
   s.platform     = :ios, "8.0"
 s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
-s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
+#s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
+ s.source                = {:path => "."}
   s.source_files  = "TQPDFReader/**/*.{h,m}"
 
   s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
   s.dependency "CocoaLumberjack", '~> 2.0'
+  s.dependency "Masonry"
   s.dependency "FDFullscreenPopGesture"
  end

@@ -12,7 +12,7 @@
 //用于本地pdf文件
 + (CGPDFDocumentRef)pdfRefByFilePath:(NSString * _Nonnull)aFilePath
 {
-    if (!aFilePath) {
+    if (aFilePath.length == 0) {
         return nil;
     }
     

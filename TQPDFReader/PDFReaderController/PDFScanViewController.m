@@ -14,6 +14,8 @@
 #import "TQPDFReader.h"
 #import "PDFShareTools.h"
 #import "PDFOtherViewTools.h"
+#import <WebKit/WebKit.h>
+#import <Masonry.h>
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
 static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 @interface HQ_UIActivityType:UIActivity
@@ -156,7 +158,7 @@ static NSInteger cellHeight = 0;
 static NSInteger pageOffSetY = 0;
 
 
-@interface PDFScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate>
+@interface PDFScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,WKNavigationDelegate>
 @property (assign, nonatomic) CGPDFDocumentRef  pdfRef;
 @property (assign, nonatomic) NSInteger pageTotal;//总页数
 @property (assign, nonatomic) NSInteger currentPage;//当前页
@@ -173,6 +175,9 @@ static NSInteger pageOffSetY = 0;
 @property (nonatomic, assign) BOOL isPanG;
 /** heightCache */
 @property (nonatomic, strong) NSCache *cacheHeight;
+/** webview */
+@property (nonatomic, strong) WKWebView  *webView;
+
 @end
 
 @implementation PDFScanViewController
@@ -230,7 +235,7 @@ static NSInteger pageOffSetY = 0;
         [_quickLocationBtn setBackgroundColor:self.quickLocationBtnBGColor];
         [_quickLocationBtn setFrame:CGRectMake(self.view.frame.size.width - 27,20, 20, 25)];
         [_quickLocationBtn setTitleColor:self.quickLocationBtnTitleColor forState:UIControlStateNormal];
-        [_quickLocationBtn setImage:[UIImage imageNamed:@"PdfReader_slider"] forState:UIControlStateNormal];
+        [_quickLocationBtn setImage:PDFReaderImage(@"PdfReader_slider") forState:UIControlStateNormal];
         [_quickLocationBtn setImageEdgeInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
         _quickLocationBtn.hidden = YES;
         UIPanGestureRecognizer * panG = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(quickLocationPanEvent:)];
@@ -241,6 +246,26 @@ static NSInteger pageOffSetY = 0;
     if (_enableShare) {
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc]initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(enableRightShare)]];
     }
+    
+    
+    if (self.openByWebView &&  [self.urlFile hasPrefix:@"http"]) {
+        self.collection.hidden = YES;
+        WKWebViewConfiguration * config = [WKWebViewConfiguration new];
+        config.suppressesIncrementalRendering = YES;
+        _webView  = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) configuration:config];
+        _urlFile = [_urlFile stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
+         _webView.navigationDelegate = self;
+        NSURL * url = [NSURL URLWithString:self.urlFile];
+        [_webView loadRequest:[NSURLRequest requestWithURL:url]];
+        [self.scrollView addSubview:_webView];
+        [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.leading.mas_equalTo(0);
+            make.trailing.mas_equalTo(0);
+            make.top.mas_equalTo(0);
+            make.bottom.mas_equalTo(0);
+        }];
+    }
+    
 }
 
 - (void)enableRightShare{
@@ -296,6 +321,10 @@ static NSInteger pageOffSetY = 0;
          [self.navigationItem setTitleView:self.customTitleLabel];
     }
     
+    if (self.openByWebView) {
+        return;
+    }
+    
     if (_localFileType) {
         [self loadLocalResourseFile:self.urlFile];
         return;
@@ -338,6 +367,9 @@ static NSInteger pageOffSetY = 0;
         [self.imageView setImage:[UIImage imageWithContentsOfFile:localPath]];
     }
     else /*if (self.resourseType == ResourceType_PDFReader_pdf )*/{
+        if ([localPath hasPrefix:@"http"]) {//在线文档
+            return;
+        }
         _pdfRef = [PDFDocumentTools pdfRefByFilePath:localPath];
         CGPDFPageRef pageRef = CGPDFDocumentGetPage(_pdfRef,1);
         CGRect mediaRect = CGPDFPageGetBoxRect(pageRef, kCGPDFCropBox);//pdf内容的rect
@@ -573,6 +605,19 @@ static NSInteger pageOffSetY = 0;
      _downLoadPanelVC.resourseType = self.resourseType;
     return _downLoadPanelVC;
 }
+
+
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
+    NSLog(@"finished");
+}
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
+    NSLog(@"test");
+    if (self.openErrorBlock) {
+        self.openErrorBlock(error);
+    }
+    
+}
+
 
 /*
 #pragma mark - Navigation

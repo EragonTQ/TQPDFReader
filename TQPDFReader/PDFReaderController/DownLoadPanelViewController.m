@@ -49,10 +49,10 @@
 
     
     if (self.resourseType == ResourceType_PDFReader_image) {
-        [_imageResourceView setImage:[UIImage imageNamed:@"type_jpp_icon"]];
+        [_imageResourceView setImage:PDFReaderImage(@"type_jpp_icon")];
     }
     else
-        [_imageResourceView setImage:[UIImage imageNamed:@"icon_pd_big"]];
+        [_imageResourceView setImage:PDFReaderImage(@"icon_pd_big")];
     
     
     [[PDFReaderDownloadManager shareInstance] getDownLoadTaskStatus:self.fileUrl withBlock:^(NSURLSessionTaskState status) {
