@@ -8,8 +8,10 @@ target 'TQPDFReaderDemo' do
   # use_frameworks!
 
   # Pods for TQPDFReaderDemo
-   #pod 'TQPDFReader' , :path => './TQPDFReader'
+  # pod 'TQPDFReader' , :path => './TQPDFReader'
 	 
-pod 'TQPDFReader'  
+pod 'TQPDFReader'
+
+pod 'Masonry'
 
 end

@@ -11,7 +11,7 @@
 
 #import <SVProgressHUD/SVProgressHUD.h>
 #import <CocoaLumberjack/CocoaLumberjack.h>
-
+//#import <Masonry/Masonry.h>
 #import "PDFScanViewController.h"
 //设备 Screen
 #define PDFReader_Screen_Bounds [UIScreen mainScreen].bounds
