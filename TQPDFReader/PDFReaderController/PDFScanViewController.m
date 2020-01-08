@@ -17,7 +17,7 @@
 #import <WebKit/WebKit.h>
 //#import <Masonry/Masonry.h>
 #import "Masonry/Masonry.h"
-
+#import <math.h>
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
 static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 @interface HQ_UIActivityType:UIActivity
@@ -179,6 +179,12 @@ static NSInteger pageOffSetY = 0;
 @property (nonatomic, strong) NSCache *cacheHeight;
 /** webview */
 @property (nonatomic, strong) WKWebView  *webView;
+@property (nonatomic, strong) UIButton  *rotateButton;
+/** rotate status */
+@property (nonatomic, assign) BOOL isRotated;
+
+
+
 
 @end
 
@@ -194,6 +200,38 @@ static NSInteger pageOffSetY = 0;
     
     [[NSNotificationCenter defaultCenter]removeObserver:self];
     NSLog(@"dealloc%@",[self class]);
+}
+
+- (UIButton *)rotateButton
+{
+    if (!_rotateButton) {
+        _rotateButton = [UIButton buttonWithType:UIButtonTypeCustom];
+        [_rotateButton setTitle:@"旋转" forState:UIControlStateNormal];
+        [_rotateButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [_rotateButton addTarget:self action:@selector(clickRotateEvent:) forControlEvents:UIControlEventTouchUpInside];
+        [self.view addSubview: _rotateButton];
+        [_rotateButton mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.bottom.mas_equalTo(-50);
+            make.right.mas_equalTo(-20);
+            make.width.height.mas_equalTo(40);
+        }];
+    }
+    return _rotateButton;
+}
+
+- (void)clickRotateEvent:(id)sender
+{
+    if (self.isRotated) {
+//        [[UIDevice currentDevice] s];
+//        self.view.transform = CGAffineTransformIdentity;
+        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
+        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+    }else{
+//        self.view.transform = CGAffineTransformMakeRotation(M_PI_2);
+        NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
+        [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
+    }
+    
 }
 
 - (void)viewDidLoad {
@@ -226,8 +264,7 @@ static NSInteger pageOffSetY = 0;
     [self.saveImgBtn.layer setCornerRadius:17];
     [self.saveImgBtn.layer setMasksToBounds:YES];
     
-  //  [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc] initWithTitle:@"rotate" style:UIBarButtonItemStylePlain target:self action:@selector(clickcRotate:)]];
-    
+
     [self.pageLabel.layer setCornerRadius:4];
     [self.pageLabel.layer setMasksToBounds:YES];
     self.pageLabel.hidden = YES;
@@ -289,6 +326,7 @@ static NSInteger pageOffSetY = 0;
     [PDFReaderFileManager setFileScanPercent:@(pageOffSetY) withUrl:self.urlFile currentPage:_currentPage];
     
    UIDeviceOrientation  currentOrientation = [[UIDevice currentDevice] orientation];
+     
     if (currentOrientation != UIDeviceOrientationPortrait) {
         NSNumber *orientationUnknown = [NSNumber numberWithInt:UIInterfaceOrientationUnknown];
         [[UIDevice currentDevice] setValue:orientationUnknown forKey:@"orientation"];
@@ -308,12 +346,9 @@ static NSInteger pageOffSetY = 0;
     if (pageOffSetY > 0) {
         [_collection setContentOffset:CGPointMake(0, pageOffSetY)];
     }
-    
 
     [PDFOtherViewTools loadHistoryView:self.view withCurrentPage:_currentPage];
     [self setPageNumber:_collection.contentOffset.y];
-    
-
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -501,8 +536,15 @@ static NSInteger pageOffSetY = 0;
     // Dispose of any resources that can be recreated.
 }
 
-- (UIInterfaceOrientationMask)supportedInterfaceOrientations{
-    return UIInterfaceOrientationMaskAll;
+
+- (UIInterfaceOrientationMask)supportedInterfaceOrientations
+{
+    return UIInterfaceOrientationMaskAllButUpsideDown;
+}
+
+- (UIInterfaceOrientation)preferredInterfaceOrientationForPresentation
+{
+     return UIInterfaceOrientationPortrait;
 }
 
 #pragma mark - photo
@@ -538,6 +580,7 @@ static NSInteger pageOffSetY = 0;
     }
     else{
         BOOL statusHidden = self.navigationController.navigationBarHidden;
+//        self.rotateButton.hidden = statusHidden;
         [self.navigationController setNavigationBarHidden:!statusHidden animated:YES];
     }
     
