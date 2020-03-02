@@ -17,7 +17,7 @@ NS_ASSUME_NONNULL_BEGIN
 typedef void(^ShareBlock)(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError);
 
 typedef void(^OpenErrorBlock)(NSError * __nullable error);
-@interface PDFScrollView : UIScrollView<UIGestureRecognizerDelegate>
+@interface TQPDFScrollView : UIScrollView<UIGestureRecognizerDelegate>
 
 @end
 

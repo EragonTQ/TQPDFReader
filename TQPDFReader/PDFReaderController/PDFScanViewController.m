@@ -83,7 +83,7 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 
 #define kPDFScanViewController_Device_is_iPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
 
-@implementation PDFScrollView
+@implementation TQPDFScrollView
 
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
     return YES;
@@ -167,7 +167,7 @@ static NSInteger pageOffSetY = 0;
 
 @property (strong, nonatomic) NSString *pathBook;
 @property (weak, nonatomic) IBOutlet UICollectionView *collection;
-@property (nonatomic,weak) IBOutlet PDFScrollView * scrollView;
+@property (nonatomic,weak) IBOutlet TQPDFScrollView * scrollView;
 @property (weak, nonatomic) IBOutlet UIImageView *imageView;
 @property (weak, nonatomic) IBOutlet UIButton *saveImgBtn;
 @property (weak, nonatomic) IBOutlet UILabel *pageLabel;
