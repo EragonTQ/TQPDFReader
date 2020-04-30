@@ -1,27 +1,27 @@
 //
-//  DownLoadPanelViewController.m
+//  TQDownLoadPanelViewController.m
 //  PDFReader
 //
 //  Created by litianqi on 16/12/8.
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "DownLoadPanelViewController.h"
-#import "PDFReaderDownloadManager.h"
-#import "PDFReaderProgressBarView.h"
-#import "PDFReaderFileManager.h"
+#import "TQDownLoadPanelViewController.h"
+#import "TQPDFReaderDownloadManager.h"
+#import "TQPDFReaderProgressBarView.h"
+#import "TQPDFReaderFileManager.h"
 #import "TQPDFReader.h"
 
-@interface DownLoadPanelViewController ()<PDFReaderDownloadManagerDelegate>
+@interface TQDownLoadPanelViewController ()<TQPDFReaderDownloadManagerDelegate>
 @property (nonatomic,weak) IBOutlet UILabel *currentProgressLabel;
-@property (nonatomic,weak) IBOutlet PDFReaderProgressBarView * progressView;
+@property (nonatomic,weak) IBOutlet TQPDFReaderProgressBarView * progressView;
 @property (nonatomic,weak) IBOutlet UIButton * continueBtn;
 @property (nonatomic,weak) IBOutlet UIImageView * imageResourceView;
 
 @property (nonatomic,weak) IBOutlet UIButton * pauseBtn;
 @end
 
-@implementation DownLoadPanelViewController
+@implementation TQDownLoadPanelViewController
 
 - (void)dealloc{
     NSLog(@"delloc%@",[self class]);
@@ -34,7 +34,7 @@
     [self.progressView setForeGColor:[UIColor colorWithRed:44.0/255.0 green:192.0/255.0 blue:92.0/255.0 alpha:1]];
     [self.progressView setBackGColor:[UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1]];
     
-    [[PDFReaderDownloadManager shareInstance] setDownLoadDelegate:self];
+    [[TQPDFReaderDownloadManager shareInstance] setDownLoadDelegate:self];
 }
 
 - (void)viewWillAppear:(BOOL)animated{
@@ -55,7 +55,7 @@
         [_imageResourceView setImage:PDFReaderImage(@"icon_pd_big")];
     
     
-    [[PDFReaderDownloadManager shareInstance] getDownLoadTaskStatus:self.fileUrl withBlock:^(NSURLSessionTaskState status) {
+    [[TQPDFReaderDownloadManager shareInstance] getDownLoadTaskStatus:self.fileUrl withBlock:^(NSURLSessionTaskState status) {
         if (NSURLSessionTaskStateRunning == status) {
             [self setPauseForUI:NO];
             
@@ -88,7 +88,7 @@
 
 - (IBAction)clickPauseLoad:(id)sender{
 //    DDLogInfo(@"pause download :%@",[self class]);
-    [[PDFReaderDownloadManager shareInstance] stopDownLoadFile:nil];
+    [[TQPDFReaderDownloadManager shareInstance] stopDownLoadFile:nil];
     self.continueBtn.hidden = NO;
     [self setPauseForUI:YES];
 }
@@ -97,7 +97,7 @@
 //     DDLogInfo(@"continue download :%@",[self class]);
     [self setPauseForUI:NO];
     NSString * urlfile = self.fileUrl;
-    [[PDFReaderDownloadManager shareInstance]  startDownLoadFile:urlfile];
+    [[TQPDFReaderDownloadManager shareInstance]  startDownLoadFile:urlfile];
 
 }
 
@@ -119,7 +119,7 @@
 }
 
 
-#pragma mark -- PDFReaderDownloadManagerDelegate
+#pragma mark -- TQPDFReaderDownloadManagerDelegate
 - (void)downLoadingPercent:(float)percentDownload totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
     float totalRecived =  (float)totalBytesWritten/(1024.0*1024);
     float totalExpected =  (float)totalBytesExpectedToWrite/(1024.0*1024);

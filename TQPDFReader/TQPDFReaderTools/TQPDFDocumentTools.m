@@ -6,9 +6,9 @@
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "PDFDocumentTools.h"
+#import "TQPDFDocumentTools.h"
 
-@implementation PDFDocumentTools
+@implementation TQPDFDocumentTools
 //用于本地pdf文件
 + (CGPDFDocumentRef)pdfRefByFilePath:(NSString * _Nonnull)aFilePath
 {

@@ -7,12 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PDFReaderFileManager.h"
+#import "TQPDFReaderFileManager.h"
 NS_ASSUME_NONNULL_BEGIN
-
-
-
-
 
 typedef void(^ShareBlock)(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError);
 
@@ -29,7 +25,7 @@ typedef void(^OpenErrorBlock)(NSError * __nullable error);
 @end
 
 
-@interface PDFScanViewController : UIViewController
+@interface TQPDFScanViewController : UIViewController
 @property (nonatomic,strong) NSString * urlFile;
 @property (assign, nonatomic) ResourceType_PDFReader  resourseType;
 @property (nonatomic,assign) BOOL localFileType;
@@ -44,7 +40,9 @@ typedef void(^OpenErrorBlock)(NSError * __nullable error);
 @property (nonatomic, copy) ShareBlock shareBlock;
 /** 分享 */
 @property (nonatomic, assign) BOOL enableShare;//默认是NO
-/*如果采用webview 加载，就不显示下载的过程了，系统控制，否则会有下载的中间进度页面*/
+/*如果采用webview 加载，就不显示下载的过程了，在线观看;
+ 否则就会采用下载存储的方式，显示的下载的中间进度页面，可以离线观看，建议采用这种方式
+ */
 @property (nonatomic, assign) BOOL openByWebView;//默认是NO
 
 

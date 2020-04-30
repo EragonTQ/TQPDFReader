@@ -10,6 +10,7 @@ target 'TQPDFReaderDemo' do
   # Pods for TQPDFReaderDemo
   # pod 'TQPDFReader' , :path => './TQPDFReader'
 	 
+#pod 'TQPDFReader-local' ,:path => './../'
 pod 'TQPDFReader'
 
 pod 'Masonry'

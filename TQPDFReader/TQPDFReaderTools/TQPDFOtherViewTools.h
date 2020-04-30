@@ -1,5 +1,5 @@
 //
-//  PDFOtherViewTools.h
+//  TQPDFOtherViewTools.h
 //  PDFReaderDemo
 //
 //  Created by litianqi on 2018/7/12.
@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 #import <UIKit/UIKit.h>
-@interface PDFOtherViewTools : NSObject
+@interface TQPDFOtherViewTools : NSObject
 + (void)loadHistoryView:(UIView *)containerView withCurrentPage:(NSInteger)pageIndex;
 + (UIView *)loadErrorView:(UIView *)viewContainer;
 @end

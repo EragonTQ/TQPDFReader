@@ -1,5 +1,5 @@
 //
-//  DownLoadPanelViewController.h
+//  TQDownLoadPanelViewController.h
 //  PDFReader
 //
 //  Created by litianqi on 16/12/8.
@@ -7,10 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "PDFReaderFileManager.h"
+#import "TQPDFReaderFileManager.h"
 typedef void (^FinishedDownLoad)(NSString * downLoadedlocalPath);
 
-@interface DownLoadPanelViewController : UIViewController
+@interface TQDownLoadPanelViewController : UIViewController
 @property (nonatomic,weak) IBOutlet UILabel * fileNameLabel;
 @property (nonatomic,strong) NSString * fileUrl;
 @property (nonatomic,copy) FinishedDownLoad  finishedDownLoaded;

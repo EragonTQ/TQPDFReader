@@ -8,7 +8,7 @@
 
 #import <Foundation/Foundation.h>
 
-@interface DownLoadedTempDataManager : NSObject
+@interface TQDownLoadedTempDataManager : NSObject
 + (void)setResumeDataToLocal:(NSData *)resumeData withPercent:(float)percentDownload withTaskDescription:(NSString *)taskDescription;
 + (float)getResumeDataPercent:(NSString *)taskDescription;
 + (NSData *)getResumeData:(NSString *)taskDescription;

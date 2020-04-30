@@ -1,20 +1,20 @@
 
-//  PDFReaderDownloadManager.m
+//  TQPDFReaderDownloadManager.m
 //  PDFReader
 //
 //  Created by litianqi on 16/12/8.
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "PDFReaderDownloadManager.h"
+#import "TQPDFReaderDownloadManager.h"
 //#import "PDFReaderURLSession.h"
 //#import "PDFReaderURLSessionDataTask.h"
-#import "PDFReaderFileManager.h"
+#import "TQPDFReaderFileManager.h"
 #import <UIKit/UIKit.h>
-#import "DownLoadedTempDataManager.h"
+#import "TQDownLoadedTempDataManager.h"
 #define SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(v)  ([[[UIDevice currentDevice] systemVersion] compare:v options:NSNumericSearch] != NSOrderedAscending)
 static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
-@interface PDFReaderDownloadManager()<NSURLSessionDownloadDelegate>
+@interface TQPDFReaderDownloadManager()<NSURLSessionDownloadDelegate>
 @property (nonatomic, strong) NSURLSession * urlSession;
 //@property (nonatomic, copy) DownloadBlock downLoadedBlock;
 @property (nonatomic, strong) NSMutableArray * downLoadingArray;
@@ -22,12 +22,12 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 
 @end
 
-@implementation PDFReaderDownloadManager
-+ (PDFReaderDownloadManager *)shareInstance{
-    static PDFReaderDownloadManager * readerManagerInstance = nil;
+@implementation TQPDFReaderDownloadManager
++ (TQPDFReaderDownloadManager *)shareInstance{
+    static TQPDFReaderDownloadManager * readerManagerInstance = nil;
     static dispatch_once_t  onceToken ;
     dispatch_once(&onceToken, ^{
-        readerManagerInstance = [[PDFReaderDownloadManager alloc] init];
+        readerManagerInstance = [[TQPDFReaderDownloadManager alloc] init];
     });
     return readerManagerInstance;
 
@@ -66,7 +66,7 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 }
 
 - (void)startDownLoadFile:( NSString * _Nonnull)filePath{
-     NSString * downLoadTaskDescription = [PDFReaderFileManager cachedFileNameForKey:filePath];
+     NSString * downLoadTaskDescription = [TQPDFReaderFileManager cachedFileNameForKey:filePath];
     [self.urlSession getTasksWithCompletionHandler:^(NSArray<NSURLSessionDataTask *> * _Nonnull dataTasks, NSArray<NSURLSessionUploadTask *> * _Nonnull uploadTasks, NSArray<NSURLSessionDownloadTask *> * _Nonnull downloadTasks) {
         BOOL isExistTask = NO;
         for (NSURLSessionDownloadTask *task in downloadTasks) {
@@ -75,7 +75,7 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
             }
             else{
                 [task cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
-                    [DownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
+                    [TQDownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
                 }];
                 
             }
@@ -90,8 +90,8 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 }
 
 - (void)resumeTask:(NSString *)filePath{
-    NSString * downLoadTaskDescription = [PDFReaderFileManager cachedFileNameForKey:filePath];
-    NSData * resumeData = [DownLoadedTempDataManager getResumeData:downLoadTaskDescription];
+    NSString * downLoadTaskDescription = [TQPDFReaderFileManager cachedFileNameForKey:filePath];
+    NSData * resumeData = [TQDownLoadedTempDataManager getResumeData:downLoadTaskDescription];
     if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
         resumeData = [self correctResumeData:resumeData];
     }
@@ -114,19 +114,19 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 
 
 - (void)stopDownLoadFile:(NSString * _Nonnull )filePath{
-    NSString * downLoadTaskDescription = [PDFReaderFileManager cachedFileNameForKey:filePath];
+    NSString * downLoadTaskDescription = [TQPDFReaderFileManager cachedFileNameForKey:filePath];
     [self.urlSession getTasksWithCompletionHandler:^(NSArray<NSURLSessionDataTask *> * _Nonnull dataTasks, NSArray<NSURLSessionUploadTask *> * _Nonnull uploadTasks, NSArray<NSURLSessionDownloadTask *> * _Nonnull downloadTasks) {
         for (NSURLSessionDownloadTask * task in downloadTasks) {
             if (!filePath) {
                 [task cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
-                    [DownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
+                    [TQDownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
                 }];
                 continue;
             }
             
             if ([task.taskDescription isEqualToString:downLoadTaskDescription]) {
                 [task cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
-                   [DownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
+                   [TQDownLoadedTempDataManager setResumeDataToLocal:resumeData withPercent:0 withTaskDescription:task.taskDescription];
                 }];
                 break;
             }
@@ -141,7 +141,7 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
         return;
     }
     
-    NSString * description = [PDFReaderFileManager cachedFileNameForKey:fileUrl];
+    NSString * description = [TQPDFReaderFileManager cachedFileNameForKey:fileUrl];
     [self.urlSession getTasksWithCompletionHandler:^(NSArray<NSURLSessionDataTask *> * _Nonnull dataTasks, NSArray<NSURLSessionUploadTask *> * _Nonnull uploadTasks, NSArray<NSURLSessionDownloadTask *> * _Nonnull downloadTasks) {
         
         BOOL isCreated = NO;//已经存在
@@ -157,7 +157,7 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
         
         //没有run
         if (!isCreated) {
-            NSData * resumeData = [DownLoadedTempDataManager getResumeData:description];
+            NSData * resumeData = [TQDownLoadedTempDataManager getResumeData:description];
             if (SYSTEM_VERSION_GREATER_THAN_OR_EQUAL_TO(@"10.0")) {
                 resumeData = [self correctResumeData:resumeData];
             }
@@ -178,8 +178,8 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 }
 
 - (float)getFileDownloadedPercent:(NSString *)filePath{
-    NSString * downLoadTaskDescription = [PDFReaderFileManager cachedFileNameForKey:filePath];
-    return [DownLoadedTempDataManager getResumeDataPercent:downLoadTaskDescription];
+    NSString * downLoadTaskDescription = [TQPDFReaderFileManager cachedFileNameForKey:filePath];
+    return [TQDownLoadedTempDataManager getResumeDataPercent:downLoadTaskDescription];
     
 }
 
@@ -195,8 +195,8 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 didFinishDownloadingToURL:(NSURL *)location{
     NSLog(@"finished======%@",location.path);
     //TODO: move
-    NSString * localFilePath = [PDFReaderFileManager moveFileFrom:location.path withNewName:downloadTask.taskDescription];
-    [DownLoadedTempDataManager removeResumeData:downloadTask.taskDescription];
+    NSString * localFilePath = [TQPDFReaderFileManager moveFileFrom:location.path withNewName:downloadTask.taskDescription];
+    [TQDownLoadedTempDataManager removeResumeData:downloadTask.taskDescription];
     
     if (self.downLoadDelegate && [self.downLoadDelegate respondsToSelector:@selector(downLoadFinished:error:)]) {
         NSError * error = nil;
@@ -213,7 +213,7 @@ didFinishDownloadingToURL:(NSURL *)location{
 didCompleteWithError:(nullable NSError *)error{
    
     if (error && error.code !=-999) {
-        [DownLoadedTempDataManager removeResumeData:task.taskDescription];
+        [TQDownLoadedTempDataManager removeResumeData:task.taskDescription];
         NSLog(@"error:%@",error);
     }
     if (error &&error.code != -999 && self.downLoadDelegate && [self.downLoadDelegate respondsToSelector:@selector(downLoadFinished:error:)]) {
@@ -358,7 +358,7 @@ didCompleteWithError:(nullable NSError *)error{
 }
 
 - (void)dealloc{
-//    DDLogInfo(@"dealloc pdfReaderdownloadmanager ");
+//    DDLogInfo(@"dealloc TQPDFReaderDownloadManager ");
 }
 
 

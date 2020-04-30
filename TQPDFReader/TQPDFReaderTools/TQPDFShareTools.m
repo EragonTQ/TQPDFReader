@@ -1,15 +1,15 @@
 //
-//  PDFShareTools.m
+//  TQPDFShareTools.m
 //  PDFReaderDemo
 //
 //  Created by litianqi on 2018/7/10.
 //  Copyright © 2018年 tqUDown. All rights reserved.
 //
 
-#import "PDFShareTools.h"
+#import "TQPDFShareTools.h"
 #define kPDFScanViewController_Device_is_iPad (UI_USER_INTERFACE_IDIOM() == UIUserInterfaceIdiomPad )
 
-@implementation PDFShareTools
+@implementation TQPDFShareTools
 #pragma mark -- 分享
 
 + (void)removeTmpFile:(NSString *)cacheFilePath{
@@ -112,7 +112,7 @@
         if (block) {
             block(activityType,completed,returnedItems,activityError);
         }
-        [[PDFShareTools class] removeTmpFile:copyFilePath];
+        [[TQPDFShareTools class] removeTmpFile:copyFilePath];
     }];
     if (kPDFScanViewController_Device_is_iPad) {
         if (viewController.navigationItem.rightBarButtonItem != nil) {

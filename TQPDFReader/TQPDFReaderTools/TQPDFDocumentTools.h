@@ -8,7 +8,10 @@
 
 #import <Foundation/Foundation.h>
 #import <CoreGraphics/CoreGraphics.h>
-@interface PDFDocumentTools : NSObject
+
+NS_ASSUME_NONNULL_BEGIN
+@interface TQPDFDocumentTools : NSObject
 + (NSString *)getPdfPathByFile:(NSString *)fileName;
 + (CGPDFDocumentRef)pdfRefByFilePath:(NSString * _Nonnull )aFilePath;
 @end
+NS_ASSUME_NONNULL_END

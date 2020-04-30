@@ -6,9 +6,9 @@
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "DownLoadedTempDataManager.h"
+#import "TQDownLoadedTempDataManager.h"
 
-@implementation DownLoadedTempDataManager
+@implementation TQDownLoadedTempDataManager
 
 + (NSData *)getResumeData:(NSString *)taskDescription{
     NSDictionary * dicResumeData =  [[NSUserDefaults standardUserDefaults] objectForKey:taskDescription];

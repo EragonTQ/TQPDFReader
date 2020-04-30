@@ -1,5 +1,5 @@
 //
-//  PDFReaderFileManager.h
+//  TQPDFReaderFileManager.h
 //  PDFReader
 //
 //  Created by litianqi on 16/12/8.
@@ -14,7 +14,7 @@ typedef NS_ENUM(NSInteger , ResourceType_PDFReader){
     ResourceType_PDFReader_other
 };
 
-@interface PDFReaderFileManager : NSObject
+@interface TQPDFReaderFileManager : NSObject
 
 + (ResourceType_PDFReader )fileTypeFromUrl:(NSString *)url;
 + (NSString *)configBaseDirectory;
@@ -23,7 +23,12 @@ typedef NS_ENUM(NSInteger , ResourceType_PDFReader){
 
 + (NSString *)moveFileFrom:(NSString *)fromPath  withNewName:( NSString *)newName;
 + (BOOL)isExistFileFromUrl:(NSString *)url;
+/*删除某个url 下或者全部的缓存
+ * filepath 传空表示删除所有
+ */
 + (void)deleteDownLoadPdfFile:(NSString * )filePath;
+
+
 
 
 + (void)setFileScanPercent:(NSNumber*)percent withUrl:(NSString *)url;

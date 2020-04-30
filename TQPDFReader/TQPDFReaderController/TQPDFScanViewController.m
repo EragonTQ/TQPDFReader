@@ -6,14 +6,14 @@
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "PDFScanViewController.h"
-#import "PDFDocumentTools.h"
-#import "DownLoadPanelViewController.h"
-#import "PDFReaderDownloadManager.h"
+#import "TQPDFScanViewController.h"
+#import "TQPDFDocumentTools.h"
+#import "TQDownLoadPanelViewController.h"
+#import "TQPDFReaderDownloadManager.h"
 #import "UINavigationController+FDFullscreenPopGesture.h"
 #import "TQPDFReader.h"
-#import "PDFShareTools.h"
-#import "PDFOtherViewTools.h"
+#import "TQPDFShareTools.h"
+#import "TQPDFOtherViewTools.h"
 #import <WebKit/WebKit.h>
 //#import <Masonry/Masonry.h>
 #import "Masonry/Masonry.h"
@@ -160,7 +160,7 @@ static NSInteger cellHeight = 0;
 static NSInteger pageOffSetY = 0;
 
 
-@interface PDFScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,WKNavigationDelegate>
+@interface TQPDFScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,WKNavigationDelegate>
 @property (assign, nonatomic) CGPDFDocumentRef  pdfRef;
 @property (assign, nonatomic) NSInteger pageTotal;//总页数
 @property (assign, nonatomic) NSInteger currentPage;//当前页
@@ -172,7 +172,7 @@ static NSInteger pageOffSetY = 0;
 @property (weak, nonatomic) IBOutlet UIButton *saveImgBtn;
 @property (weak, nonatomic) IBOutlet UILabel *pageLabel;
 
-@property (nonatomic, strong) DownLoadPanelViewController * downLoadPanelVC;
+@property (nonatomic, strong) TQDownLoadPanelViewController * downLoadPanelVC;
 @property (nonatomic, strong) UIButton * quickLocationBtn;
 @property (nonatomic, assign) BOOL isPanG;
 /** heightCache */
@@ -188,7 +188,7 @@ static NSInteger pageOffSetY = 0;
 
 @end
 
-@implementation PDFScanViewController
+@implementation TQPDFScanViewController
 
 - (void)dealloc{
     for (UIGestureRecognizer * ges in self.view.gestureRecognizers) {
@@ -245,7 +245,14 @@ static NSInteger pageOffSetY = 0;
     self.scrollView.minimumZoomScale = 1.0f;
     self.scrollView.maximumZoomScale = 3.0f;
     [self.scrollView setAlwaysBounceHorizontal:YES];
-    self.automaticallyAdjustsScrollViewInsets = NO;
+    
+    if (@available(iOS 11.0, *)) {
+        self.scrollView.contentInsetAdjustmentBehavior = UIScrollViewContentInsetAdjustmentNever;
+    } else {
+        // Fallback on earlier versions
+        self.automaticallyAdjustsScrollViewInsets = NO;
+    }
+
     _isPanG = NO;
     _pageLabel.hidden = YES;
     pageOffSetY = 0;
@@ -286,7 +293,6 @@ static NSInteger pageOffSetY = 0;
         [self.navigationItem setRightBarButtonItem:[[UIBarButtonItem alloc]initWithTitle:@"分享" style:UIBarButtonItemStylePlain target:self action:@selector(enableRightShare)]];
     }
     
-    
     if (self.openByWebView &&  [self.urlFile hasPrefix:@"http"]) {
         self.collection.hidden = YES;
         WKWebViewConfiguration * config = [WKWebViewConfiguration new];
@@ -297,6 +303,9 @@ static NSInteger pageOffSetY = 0;
         NSURL * url = [NSURL URLWithString:self.urlFile];
         [_webView loadRequest:[NSURLRequest requestWithURL:url]];
         [self.scrollView addSubview:_webView];
+        
+     
+        
         [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.mas_equalTo(0);
             make.trailing.mas_equalTo(0);
@@ -309,7 +318,7 @@ static NSInteger pageOffSetY = 0;
 
 - (void)enableRightShare{
     __weak typeof(self) weakSelf = self;
-    [[PDFShareTools class]shareViewController:self filePath:self.urlFile shareBlock:^(NSString * _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
+    [[TQPDFShareTools class]shareViewController:self filePath:self.urlFile shareBlock:^(NSString * _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         __strong typeof(self) strongSelf = weakSelf;
         if (strongSelf.shareBlock) {
             strongSelf.shareBlock(activityType, completed, returnedItems, activityError);
@@ -323,7 +332,7 @@ static NSInteger pageOffSetY = 0;
     [super viewWillDisappear:animated];
     self.fd_interactivePopDisabled = NO;
     pageOffSetY = _collection.contentOffset.y;
-    [PDFReaderFileManager setFileScanPercent:@(pageOffSetY) withUrl:self.urlFile currentPage:_currentPage];
+    [TQPDFReaderFileManager setFileScanPercent:@(pageOffSetY) withUrl:self.urlFile currentPage:_currentPage];
     
    UIDeviceOrientation  currentOrientation = [[UIDevice currentDevice] orientation];
      
@@ -340,14 +349,14 @@ static NSInteger pageOffSetY = 0;
 
 - (void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    self.currentPage = [PDFReaderFileManager getFileScanHistoryPageWithUrl:self.urlFile];
-    NSNumber * pageYNumber = [PDFReaderFileManager getFileScanPercentWithUrl:self.urlFile];
+    self.currentPage = [TQPDFReaderFileManager getFileScanHistoryPageWithUrl:self.urlFile];
+    NSNumber * pageYNumber = [TQPDFReaderFileManager getFileScanPercentWithUrl:self.urlFile];
     pageOffSetY = pageYNumber ? [pageYNumber integerValue] :pageOffSetY;
     if (pageOffSetY > 0) {
         [_collection setContentOffset:CGPointMake(0, pageOffSetY)];
     }
 
-    [PDFOtherViewTools loadHistoryView:self.view withCurrentPage:_currentPage];
+    [TQPDFOtherViewTools loadHistoryView:self.view withCurrentPage:_currentPage];
     [self setPageNumber:_collection.contentOffset.y];
 }
 
@@ -367,8 +376,8 @@ static NSInteger pageOffSetY = 0;
         return;
     }
     
-    if ([PDFReaderFileManager isExistFileFromUrl:self.urlFile]) {
-        NSString * localFilePath = [PDFReaderFileManager getCompleteFileLocalPathFromUrl:self.urlFile];
+    if ([TQPDFReaderFileManager isExistFileFromUrl:self.urlFile]) {
+        NSString * localFilePath = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:self.urlFile];
         [self loadLocalResourseFile:localFilePath];
     }
     else{
@@ -388,7 +397,7 @@ static NSInteger pageOffSetY = 0;
     if (!localPath) {
         return;
     }
-    ResourceType_PDFReader typeResource = [PDFReaderFileManager fileTypeFromUrl:self.urlFile];
+    ResourceType_PDFReader typeResource = [TQPDFReaderFileManager fileTypeFromUrl:self.urlFile];
     if (typeResource != ResourceType_PDFReader_other) {//修正
         _resourseType = typeResource;
     }
@@ -407,7 +416,7 @@ static NSInteger pageOffSetY = 0;
         if ([localPath hasPrefix:@"http"]) {//在线文档
             return;
         }
-        _pdfRef = [PDFDocumentTools pdfRefByFilePath:localPath];
+        _pdfRef = [TQPDFDocumentTools pdfRefByFilePath:localPath];
         CGPDFPageRef pageRef = CGPDFDocumentGetPage(_pdfRef,1);
         CGRect mediaRect = CGPDFPageGetBoxRect(pageRef, kCGPDFCropBox);//pdf内容的rect
         if (mediaRect.size.width) {
@@ -419,7 +428,7 @@ static NSInteger pageOffSetY = 0;
                 self.openErrorBlock([NSError errorWithDomain:localPath code:-1 userInfo:nil]);
             }
 //            DDLogError(@"文件对象=nil,直接退出:%@",localPath);
-            [PDFOtherViewTools loadErrorView:self.view];
+            [TQPDFOtherViewTools loadErrorView:self.view];
             return;
         }
         size_t count = CGPDFDocumentGetNumberOfPages(_pdfRef);
@@ -564,7 +573,7 @@ static NSInteger pageOffSetY = 0;
 
 #pragma mark -Event
 
-- (IBAction)clcikSaveEvent:(id)sender{
+- (IBAction)clickSaveEvent:(id)sender{
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
 }
 
@@ -615,16 +624,6 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-//- (void)clickcRotate:(id)sender{
-//
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//
-//        });
-//    });
-//
-//}
-
 - (UIColor *)quickLocationBtnBGColor{
     if (!_quickLocationBtnBGColor) {
         _quickLocationBtnBGColor = self.pageLabel.backgroundColor;
@@ -639,9 +638,9 @@ static NSInteger pageOffSetY = 0;
     return _quickLocationBtnTitleColor;
 }
 
-- (DownLoadPanelViewController *)downLoadPanelVC{
+- (TQDownLoadPanelViewController *)downLoadPanelVC{
     if (!_downLoadPanelVC) {
-        _downLoadPanelVC = [[UIStoryboard  storyboardWithName:@"PdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"DownLoadPanelViewController"];
+        _downLoadPanelVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQDownLoadPanelViewController"];
         _downLoadPanelVC.title = self.title;
         [self addChildViewController:_downLoadPanelVC];
         [self.view addSubview:_downLoadPanelVC.view];
@@ -662,7 +661,6 @@ static NSInteger pageOffSetY = 0;
     }
     
 }
-
 
 /*
 #pragma mark - Navigation

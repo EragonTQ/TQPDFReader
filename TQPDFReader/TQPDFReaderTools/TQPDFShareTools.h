@@ -1,5 +1,5 @@
 //
-//  PDFShareTools.h
+//  TQPDFShareTools.h
 //  PDFReaderDemo
 //
 //  Created by litianqi on 2018/7/10.
@@ -11,6 +11,6 @@
 
 typedef void(^ShareBlock)(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError);
 
-@interface PDFShareTools : NSObject
+@interface TQPDFShareTools : NSObject
 + (void)shareViewController:(UIViewController * _Nullable)viewController  filePath:(NSString *_Nullable)filePath shareBlock:(ShareBlock  _Nullable )block;
 @end

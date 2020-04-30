@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15400" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tGW-oV-AGI">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="16096" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="tGW-oV-AGI">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15404"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="16086"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -17,7 +17,7 @@
         <!--Scan View Controller-->
         <scene sceneID="WD8-3U-SOh">
             <objects>
-                <viewController storyboardIdentifier="PDFScanViewController" automaticallyAdjustsScrollViewInsets="NO" id="v7r-2Y-dBJ" customClass="PDFScanViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="PDFScanViewController" automaticallyAdjustsScrollViewInsets="NO" id="v7r-2Y-dBJ" customClass="TQPDFScanViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="o20-YK-S8v"/>
                         <viewControllerLayoutGuide type="bottom" id="Ov1-0u-EuN"/>
@@ -142,7 +142,7 @@
                                 <color key="textColor" red="0.40000000000000002" green="0.40000000000000002" blue="0.40000000000000002" alpha="1" colorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1m-Xo-Q25" customClass="PDFReaderProgressBarView">
+                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="s1m-Xo-Q25" customClass="TQPDFReaderProgressBarView">
                                 <rect key="frame" x="25" y="284" width="327" height="10"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>

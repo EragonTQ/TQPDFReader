@@ -1,14 +1,14 @@
 //
-//  ProgressBarView.m
+//  TQPDFReaderProgressBarView.m
 //  edu24app
 //
 //  Created by litianqi on 16/3/4.
 //  Copyright © 2016年 edu24ol. All rights reserved.
 //
 
-#import "PDFReaderProgressBarView.h"
+#import "TQPDFReaderProgressBarView.h"
 
-@implementation PDFReaderProgressBarView
+@implementation TQPDFReaderProgressBarView
 
 -(void)setProgressValue:(float)progressValue{
     _progressValue = progressValue;

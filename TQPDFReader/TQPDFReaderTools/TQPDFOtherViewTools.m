@@ -1,14 +1,14 @@
 //
-//  PDFOtherViewTools.m
+//  TQPDFOtherViewTools.m
 //  PDFReaderDemo
 //
 //  Created by litianqi on 2018/7/12.
 //  Copyright © 2018年 tqUDown. All rights reserved.
 //
 
-#import "PDFOtherViewTools.h"
+#import "TQPDFOtherViewTools.h"
 #import "TQPDFReader.h"
-@implementation PDFOtherViewTools
+@implementation TQPDFOtherViewTools
 + (void)loadHistoryView:(UIView *)containerView withCurrentPage:(NSInteger)pageIndex{
     if (pageIndex <= 1) {
         return;

@@ -1,17 +1,17 @@
 //
-//  PDFReaderFileManager.m
+//  TQPDFReaderFileManager.m
 //  PDFReader
 //
 //  Created by litianqi on 16/12/8.
 //  Copyright © 2016年 TQ. All rights reserved.
 //
 
-#import "PDFReaderFileManager.h"
+#import "TQPDFReaderFileManager.h"
 #import <CommonCrypto/CommonDigest.h>
 static NSString * const kPDFScanViewOffsetY = @"_kPDFScanViewOffsetY";
 static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
 
-@implementation PDFReaderFileManager
+@implementation TQPDFReaderFileManager
 
 + (ResourceType_PDFReader )fileTypeFromUrl:(NSString *)url{
     if (!url) {
@@ -75,25 +75,25 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
 */
 
 + (NSString *)getCompleteFileLocalPathFromUrl:(NSString *)url{
-    NSString * nameFile = [PDFReaderFileManager cachedFileNameForKey:url];
-    return [PDFReaderFileManager getCompleteFilePathFromName:nameFile];
+    NSString * nameFile = [TQPDFReaderFileManager cachedFileNameForKey:url];
+    return [TQPDFReaderFileManager getCompleteFilePathFromName:nameFile];
 }
 
 + (NSString *)getCompleteFilePathFromName:(NSString *)fileName{
-    NSString * basePath = [PDFReaderFileManager configBaseDirectory];
+    NSString * basePath = [TQPDFReaderFileManager configBaseDirectory];
     basePath = [basePath stringByAppendingPathComponent:fileName];
     return basePath;
 }
 
 + (BOOL)isExistFileFromUrl:(NSString *)url{
-    NSString * pathLocalFile = [PDFReaderFileManager getCompleteFileLocalPathFromUrl:url];
+    NSString * pathLocalFile = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:url];
     NSFileManager * fileManager = [NSFileManager defaultManager];
     return [fileManager fileExistsAtPath:pathLocalFile];
 }
 
 + (NSString *)moveFileFrom:(NSString *)fromPath withNewName:(nonnull NSString *)newName{
     
-    NSString * pathBase = [PDFReaderFileManager configBaseDirectory];
+    NSString * pathBase = [TQPDFReaderFileManager configBaseDirectory];
     NSString * toFilePath = [pathBase stringByAppendingPathComponent:newName];
     NSError * error;
     NSFileManager * fileManager = [[NSFileManager alloc] init];
@@ -113,15 +113,31 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
 }
 
 + (void)deleteDownLoadPdfFile:(NSString * )filePath{
-    NSString * pathDirectory = [PDFReaderFileManager configBaseDirectory];
+    NSString * pathDirectory = [TQPDFReaderFileManager configBaseDirectory];
     NSFileManager * fileManager = [NSFileManager defaultManager];
-    if (filePath && filePath.length >0) {
-        pathDirectory = filePath;
-    }
     NSError * error = nil;
-    
+    if (filePath && filePath.length >0) {
+        filePath = [self cachedFileNameForKey:filePath];
+        pathDirectory = [pathDirectory stringByAppendingPathComponent:filePath];
+        
+        if ([fileManager fileExistsAtPath:pathDirectory]) {
+            [fileManager removeItemAtPath:pathDirectory error:&error];
+            NSLog(@"删除成功%@",pathDirectory);
+          
+        }else{
+            NSLog(@"文件不存在%@",pathDirectory);
+        }
+        
+        if (error) {
+            NSLog(@"删除失败%@\n",error);
+        }
+        
+        return;
+    }
+  
     NSArray *itemArray = [fileManager contentsOfDirectoryAtPath:pathDirectory error:&error];
     if (!itemArray || itemArray.count == 0) {
+        NSLog(@"缓存为空，不需要清理~");
         return;
     }
     [itemArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
