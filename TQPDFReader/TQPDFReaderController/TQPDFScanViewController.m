@@ -15,12 +15,11 @@
 #import "TQPDFShareTools.h"
 #import "TQPDFOtherViewTools.h"
 #import <WebKit/WebKit.h>
-//#import <Masonry/Masonry.h>
 #import "Masonry/Masonry.h"
 #import <math.h>
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
 static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
-@interface HQ_UIActivityType:UIActivity
+@interface TQ_UIActivityType:UIActivity
 @property (nonatomic) NSString *title;
 @property (nonatomic) NSString *type;
 @property (nonatomic) NSString *urlString;
@@ -33,7 +32,7 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 
 @end
 
-@implementation HQ_UIActivityType
+@implementation TQ_UIActivityType
 
 - (instancetype)initWithTitle:(NSString *)title type:(NSString *)type{
     if (self = [super init]) {

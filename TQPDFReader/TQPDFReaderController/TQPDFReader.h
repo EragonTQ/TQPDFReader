@@ -10,8 +10,7 @@
 
 
 #import <SVProgressHUD/SVProgressHUD.h>
-#import <CocoaLumberjack/CocoaLumberjack.h>
-//#import <Masonry/Masonry.h>
+//#import <CocoaLumberjack/CocoaLumberjack.h>
 #import "TQPDFScanViewController.h"
 //设备 Screen
 #define PDFReader_Screen_Bounds [UIScreen mainScreen].bounds

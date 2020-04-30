@@ -17,7 +17,7 @@
         <!--Scan View Controller-->
         <scene sceneID="WD8-3U-SOh">
             <objects>
-                <viewController storyboardIdentifier="PDFScanViewController" automaticallyAdjustsScrollViewInsets="NO" id="v7r-2Y-dBJ" customClass="TQPDFScanViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TQPDFScanViewController" automaticallyAdjustsScrollViewInsets="NO" id="v7r-2Y-dBJ" customClass="TQPDFScanViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="o20-YK-S8v"/>
                         <viewControllerLayoutGuide type="bottom" id="Ov1-0u-EuN"/>
@@ -124,7 +124,7 @@
         <!--Down Load Panel View Controller-->
         <scene sceneID="den-sS-nA0">
             <objects>
-                <viewController storyboardIdentifier="DownLoadPanelViewController" id="7M1-gg-D8u" customClass="DownLoadPanelViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="TQDownLoadPanelViewController" id="7M1-gg-D8u" customClass="TQDownLoadPanelViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="EQU-do-LlG"/>
                         <viewControllerLayoutGuide type="bottom" id="0Sl-S2-2s0"/>

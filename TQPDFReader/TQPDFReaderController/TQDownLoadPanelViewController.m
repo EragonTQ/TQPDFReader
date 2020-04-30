@@ -34,6 +34,8 @@
     [self.progressView setForeGColor:[UIColor colorWithRed:44.0/255.0 green:192.0/255.0 blue:92.0/255.0 alpha:1]];
     [self.progressView setBackGColor:[UIColor colorWithRed:224.0/255.0 green:224.0/255.0 blue:224.0/255.0 alpha:1]];
     
+    [_pauseBtn setImage:PDFReaderImage(@"icon_off") forState:UIControlStateNormal];
+    
     [[TQPDFReaderDownloadManager shareInstance] setDownLoadDelegate:self];
 }
 
