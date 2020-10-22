@@ -187,7 +187,9 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
 - (void)URLSession:(NSURLSession *)session downloadTask:(NSURLSessionDownloadTask *)downloadTask didWriteData:(int64_t)bytesWritten totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
     if (totalBytesExpectedToWrite > 0 ) {
         float percentDownload = (float)totalBytesWritten/(float)totalBytesExpectedToWrite;
-        [self.downLoadDelegate downLoadingPercent:percentDownload totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
+        if (self.downLoadDelegate && [self.downLoadDelegate respondsToSelector:@selector(downLoadingPercent:totalBytesWritten:totalBytesExpectedToWrite:)]) {
+            [self.downLoadDelegate downLoadingPercent:percentDownload totalBytesWritten:totalBytesWritten totalBytesExpectedToWrite:totalBytesExpectedToWrite];
+        }
     }
 }
 
