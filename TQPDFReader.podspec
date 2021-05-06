@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "TQPDFReader"
-  s.version      = "0.0.6"
+  s.version      = "0.0.7"
   s.summary      = "pdf 阅读器."
   s.homepage     = "https://github.com/TianQiLi/TQPDFReader"
   s.license      = "MIT"

@@ -201,6 +201,12 @@ static NSInteger pageOffSetY = 0;
     NSLog(@"dealloc%@",[self class]);
 }
 
++(instancetype)pdfScanVC
+{
+    TQPDFScanViewController *pdfVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQPDFScanViewController"];
+    return pdfVC;
+}
+
 - (UIButton *)rotateButton
 {
     if (!_rotateButton) {
@@ -323,7 +329,9 @@ static NSInteger pageOffSetY = 0;
             strongSelf.shareBlock(activityType, completed, returnedItems, activityError);
         }
     }];
-    return;
+    if (self.eventBlock) {
+        self.eventBlock(TQLPDFEventShare);
+    }
 }
 
 
@@ -479,6 +487,17 @@ static NSInteger pageOffSetY = 0;
 }
 
 #pragma mark --UIScrollViewDelegate
+- (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
+{
+    if (self.eventBlock) {
+        if (scale > 1) {
+            self.eventBlock(TQLPDFEventScaleAdd);
+        }else{
+            self.eventBlock(TQLPDFEventScaleReduce);
+        }
+    }
+}
+
 - (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
     if (self.resourseType == ResourceType_PDFReader_pdf) {
         return _collection;

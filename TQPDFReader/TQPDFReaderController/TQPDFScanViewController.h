@@ -10,9 +10,28 @@
 #import "TQPDFReaderFileManager.h"
 NS_ASSUME_NONNULL_BEGIN
 
+
+typedef NS_ENUM(NSInteger ,TQLPDFEvent) {
+    TQLPDFEventUnknown ,
+    TQLPDFEventScaleAdd,        ///放大
+    TQLPDFEventScaleReduce,      ///减小
+    TQLPDFEventSlideDrag,        ///拖动
+    TQLPDFEventRotate,           ///旋转
+    TQLPDFEventShare,            ///分享
+    
+    
+    TQLPDFEventVertical,    ///竖屏模式观看
+    TQLPDFEventHorizontal   ///水平模式观看
+    
+};
+
+
 typedef void(^ShareBlock)(NSString * __nullable activityType, BOOL completed, NSArray * __nullable returnedItems, NSError * __nullable activityError);
 
 typedef void(^OpenErrorBlock)(NSError * __nullable error);
+
+typedef void(^TQPDFEventBlock)(TQLPDFEvent event);
+
 @interface TQPDFScrollView : UIScrollView<UIGestureRecognizerDelegate>
 
 @end
@@ -26,6 +45,9 @@ typedef void(^OpenErrorBlock)(NSError * __nullable error);
 
 
 @interface TQPDFScanViewController : UIViewController
++(instancetype)pdfScanVC;
+
+
 @property (nonatomic,strong) NSString * urlFile;
 @property (assign, nonatomic) ResourceType_PDFReader  resourseType;
 @property (nonatomic,assign) BOOL localFileType;
@@ -33,6 +55,9 @@ typedef void(^OpenErrorBlock)(NSError * __nullable error);
 @property (nonatomic,strong) UIColor *quickLocationBtnBGColor;
 @property (nonatomic,strong) UIColor *quickLocationBtnTitleColor;
 
+
+/** <#name#> */
+@property (nonatomic, copy) TQPDFEventBlock eventBlock;
 /** openErrorBlock */
 @property (nonatomic, copy) OpenErrorBlock openErrorBlock;
 
