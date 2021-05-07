@@ -61,10 +61,22 @@
         copyFilePath = [[self class]getFileCopyPath:filePath viewController:viewController];
         if (copyFilePath.length > 0) {
              url = [NSURL fileURLWithPath:copyFilePath];
-        }else
+            if (!url) {
+                url = [NSURL URLWithString:[filePath stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            }
+        }else{
             url = [NSURL fileURLWithPath:filePath];
-    }else
+            if (!url) {
+                url = [NSURL URLWithString:[filePath stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+            }
+        }
+       
+    }else{
         url = [NSURL URLWithString:filePath];
+        if (!url) {
+            url = [NSURL URLWithString:[filePath stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]]];
+        }
+    }
     
     if (url) {
         [itemArray addObject:url];
