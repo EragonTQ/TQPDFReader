@@ -490,11 +490,14 @@ static NSInteger pageOffSetY = 0;
 - (void)scrollViewDidEndZooming:(UIScrollView *)scrollView withView:(UIView *)view atScale:(CGFloat)scale
 {
     if (self.eventBlock) {
-        if (scale > 1) {
+        static float lastScale = 1;
+        if (scale - lastScale > 0) {
             self.eventBlock(TQLPDFEventScaleAdd);
-        }else{
+        }else if (scale - lastScale < 0){
             self.eventBlock(TQLPDFEventScaleReduce);
         }
+        lastScale = scale;
+       
     }
 }
 
