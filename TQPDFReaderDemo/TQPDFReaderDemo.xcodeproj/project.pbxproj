@@ -15,6 +15,7 @@
 		1C3B80CE228AC5CC00AEFCFE /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CD228AC5CC00AEFCFE /* Assets.xcassets */; };
 		1C3B80D1228AC5CC00AEFCFE /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 1C3B80CF228AC5CC00AEFCFE /* LaunchScreen.storyboard */; };
 		1C3B80D4228AC5CC00AEFCFE /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 1C3B80D3228AC5CC00AEFCFE /* main.m */; };
+		1CC8D4912930BB2000954752 /* 003.PDF in Resources */ = {isa = PBXBuildFile; fileRef = 1CC8D4902930BB2000954752 /* 003.PDF */; };
 		1CECE843231D1F2A00AD8171 /* 002.PDF in Resources */ = {isa = PBXBuildFile; fileRef = 1CECE842231D1F2A00AD8171 /* 002.PDF */; };
 		A69F605786F0935E84CC8CAB /* libPods-TQPDFReaderDemo.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 640919314C84E3708A953A68 /* libPods-TQPDFReaderDemo.a */; };
 /* End PBXBuildFile section */
@@ -32,6 +33,7 @@
 		1C3B80D0228AC5CC00AEFCFE /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		1C3B80D2228AC5CC00AEFCFE /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		1C3B80D3228AC5CC00AEFCFE /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		1CC8D4902930BB2000954752 /* 003.PDF */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 003.PDF; sourceTree = "<group>"; };
 		1CECE842231D1F2A00AD8171 /* 002.PDF */ = {isa = PBXFileReference; lastKnownFileType = image.pdf; path = 002.PDF; sourceTree = "<group>"; };
 		53E0774306492745386D53FB /* Pods-TQPDFReaderDemo.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TQPDFReaderDemo.debug.xcconfig"; path = "Target Support Files/Pods-TQPDFReaderDemo/Pods-TQPDFReaderDemo.debug.xcconfig"; sourceTree = "<group>"; };
 		640919314C84E3708A953A68 /* libPods-TQPDFReaderDemo.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TQPDFReaderDemo.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -77,6 +79,7 @@
 				1C3B80C5228AC5CB00AEFCFE /* AppDelegate.m */,
 				1C3B80C7228AC5CB00AEFCFE /* ViewController.h */,
 				1C3B80C8228AC5CB00AEFCFE /* ViewController.m */,
+				1CC8D4902930BB2000954752 /* 003.PDF */,
 				1CECE842231D1F2A00AD8171 /* 002.PDF */,
 				1C3B80CA228AC5CB00AEFCFE /* Main.storyboard */,
 				1C3B80CD228AC5CC00AEFCFE /* Assets.xcassets */,
@@ -165,6 +168,7 @@
 			files = (
 				1C3B80D1228AC5CC00AEFCFE /* LaunchScreen.storyboard in Resources */,
 				1C22B8B9231D18F000E0FBCF /* TQPDFReader in Resources */,
+				1CC8D4912930BB2000954752 /* 003.PDF in Resources */,
 				1C22B8BA231D18F000E0FBCF /* TQPDFReader.podspec in Resources */,
 				1CECE843231D1F2A00AD8171 /* 002.PDF in Resources */,
 				1C3B80CE228AC5CC00AEFCFE /* Assets.xcassets in Resources */,

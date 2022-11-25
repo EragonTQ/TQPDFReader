@@ -43,7 +43,7 @@
         
     };
     
-    NSString * path = [[NSBundle mainBundle] pathForResource:@"002" ofType:@"PDF"];
+    NSString * path = [[NSBundle mainBundle] pathForResource:@"003" ofType:@"PDF"];
     pdfVC.localFileType = YES;
     pdfVC.urlFile = path;
     [self.navigationController pushViewController:pdfVC animated:YES];

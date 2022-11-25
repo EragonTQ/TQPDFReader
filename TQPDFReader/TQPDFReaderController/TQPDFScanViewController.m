@@ -17,6 +17,59 @@
 #import <WebKit/WebKit.h>
 #import "Masonry/Masonry.h"
 #import <math.h>
+
+///解决pdf 模糊问题
+@interface __TQReaderContentTile : CATiledLayer
+
+@end
+
+
+@implementation __TQReaderContentTile
+
+#pragma mark - Constants
+
+#define LEVELS_OF_DETAIL 16
+
+#pragma mark - ReaderContentTile class methods
+
++ (CFTimeInterval)fadeDuration
+{
+    return 0.000; // iOS bug (flickering tiles) workaround
+}
+
+#pragma mark - ReaderContentTile instance methods
+
+- (instancetype)init
+{
+    if ((self = [super init])) // Initialize superclass
+    {
+        self.levelsOfDetail = LEVELS_OF_DETAIL; // Zoom levels
+
+        self.levelsOfDetailBias = (LEVELS_OF_DETAIL - 1); // Bias
+
+        UIScreen *mainScreen = [UIScreen mainScreen]; // Main screen
+
+        CGFloat screenScale = [mainScreen scale]; // Main screen scale
+
+        CGRect screenBounds = [mainScreen bounds]; // Main screen bounds
+
+        CGFloat w_pixels = (screenBounds.size.width * screenScale);
+
+        CGFloat h_pixels = (screenBounds.size.height * screenScale);
+
+        CGFloat max = ((w_pixels < h_pixels) ? h_pixels : w_pixels);
+
+        CGFloat sizeOfTiles = ((max < 512.0f) ? 512.0f : 1024.0f);
+
+        self.tileSize = CGSizeMake(sizeOfTiles, sizeOfTiles);
+    }
+
+    return self;
+}
+
+@end
+
+
 static NSString * const kActivityServiceWeixinChat = @"ActivityServiceWeixinChat";
 static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 @interface TQ_UIActivityType:UIActivity
@@ -92,6 +145,17 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 
 
 @implementation PDFPageCollectionCell
+
++ (Class)layerClass
+{
+    return [__TQReaderContentTile class];
+}
+
+-(void)dealloc
+{
+    NSLog(@"%s",__func__);
+}
+
 - (void)setPageRef:(CGPDFPageRef)pageRef{
     _pageRef = pageRef;
    /* if (!_pageRef) {
@@ -694,3 +758,4 @@ static NSInteger pageOffSetY = 0;
 */
 
 @end
+
