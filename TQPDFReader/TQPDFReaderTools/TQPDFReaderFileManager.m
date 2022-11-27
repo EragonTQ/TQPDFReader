@@ -13,26 +13,29 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
 
 @implementation TQPDFReaderFileManager
 
-+ (ResourceType_PDFReader )fileTypeFromUrl:(NSString *)url{
++ (ResourceType_PDFReader)fileTypeFromUrl:(NSString *)url
+{
     if (!url) {
         return ResourceType_PDFReader_other;
     }
-    NSString * urlLowcase = [url lowercaseString];
+    NSString *urlLowcase = [url lowercaseString];
     if ([urlLowcase hasSuffix:@".pdf"]) {
         return ResourceType_PDFReader_pdf;
     }
-    else if ([urlLowcase hasSuffix:@".jpg"]||[urlLowcase hasSuffix:@".png"]||[urlLowcase hasSuffix:@".jpeg"])
+    else if ([urlLowcase hasSuffix:@".jpg"]||[urlLowcase hasSuffix:@".png"]||[urlLowcase hasSuffix:@".jpeg"]) {
         return ResourceType_PDFReader_image;
-    else
+    } else {
         return ResourceType_PDFReader_other;
+    }
     
 }
 
-+ (NSString *)configBaseDirectory{
-    NSString * destinationDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)firstObject];
++ (NSString *)configBaseDirectory
+{
+    NSString *destinationDirectory = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES)firstObject];
     destinationDirectory = [destinationDirectory stringByAppendingPathComponent:@"LTQ_PDFReader"];
     
-    NSFileManager * fileManager = [NSFileManager defaultManager];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     NSError * error ;
     if (![fileManager fileExistsAtPath:destinationDirectory]) {
         [fileManager createDirectoryAtPath:destinationDirectory withIntermediateDirectories:YES attributes:nil error:&error];
@@ -44,9 +47,10 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
     return destinationDirectory;
 }
 
-+ (NSString *)cachedFileNameForKey:(NSString *)key {
++ (NSString *)cachedFileNameForKey:(NSString *)key
+{
     if (key.length > 0 && ![key hasPrefix:@"http"]) {//本地路径-避开沙盒目录变化的问题
-        NSString * docLocal = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
+        NSString *docLocal = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES).firstObject;
         key = [key stringByReplacingOccurrencesOfString:docLocal withString:@""];
     }
     
@@ -74,29 +78,33 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
 }
 */
 
-+ (NSString *)getCompleteFileLocalPathFromUrl:(NSString *)url{
-    NSString * nameFile = [TQPDFReaderFileManager cachedFileNameForKey:url];
++ (NSString *)getCompleteFileLocalPathFromUrl:(NSString *)url
+{
+    NSString *nameFile = [TQPDFReaderFileManager cachedFileNameForKey:url];
     return [TQPDFReaderFileManager getCompleteFilePathFromName:nameFile];
 }
 
-+ (NSString *)getCompleteFilePathFromName:(NSString *)fileName{
-    NSString * basePath = [TQPDFReaderFileManager configBaseDirectory];
++ (NSString *)getCompleteFilePathFromName:(NSString *)fileName
+{
+    NSString *basePath = [TQPDFReaderFileManager configBaseDirectory];
     basePath = [basePath stringByAppendingPathComponent:fileName];
     return basePath;
 }
 
-+ (BOOL)isExistFileFromUrl:(NSString *)url{
-    NSString * pathLocalFile = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:url];
-    NSFileManager * fileManager = [NSFileManager defaultManager];
++ (BOOL)isExistFileFromUrl:(NSString *)url
+{
+    NSString *pathLocalFile = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:url];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
     return [fileManager fileExistsAtPath:pathLocalFile];
 }
 
-+ (NSString *)moveFileFrom:(NSString *)fromPath withNewName:(nonnull NSString *)newName{
++ (NSString *)moveFileFrom:(NSString *)fromPath withNewName:(nonnull NSString *)newName
+{
     
-    NSString * pathBase = [TQPDFReaderFileManager configBaseDirectory];
-    NSString * toFilePath = [pathBase stringByAppendingPathComponent:newName];
-    NSError * error;
-    NSFileManager * fileManager = [[NSFileManager alloc] init];
+    NSString *pathBase = [TQPDFReaderFileManager configBaseDirectory];
+    NSString *toFilePath = [pathBase stringByAppendingPathComponent:newName];
+    NSError *error;
+    NSFileManager *fileManager = [[NSFileManager alloc] init];
     if ([fileManager fileExistsAtPath:toFilePath]) {
         [fileManager removeItemAtPath:toFilePath error:&error];
         if (error) {
@@ -112,10 +120,11 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
     return toFilePath;
 }
 
-+ (void)deleteDownLoadPdfFile:(NSString * )filePath{
-    NSString * pathDirectory = [TQPDFReaderFileManager configBaseDirectory];
-    NSFileManager * fileManager = [NSFileManager defaultManager];
-    NSError * error = nil;
++ (void)deleteDownLoadPdfFile:(NSString *)filePath
+{
+    NSString *pathDirectory = [TQPDFReaderFileManager configBaseDirectory];
+    NSFileManager *fileManager = [NSFileManager defaultManager];
+    NSError *error = nil;
     if (filePath && filePath.length >0) {
         filePath = [self cachedFileNameForKey:filePath];
         pathDirectory = [pathDirectory stringByAppendingPathComponent:filePath];
@@ -124,7 +133,7 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
             [fileManager removeItemAtPath:pathDirectory error:&error];
             NSLog(@"删除成功%@",pathDirectory);
           
-        }else{
+        } else {
             NSLog(@"文件不存在%@",pathDirectory);
         }
         
@@ -141,11 +150,11 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
         return;
     }
     [itemArray enumerateObjectsUsingBlock:^(NSString * _Nonnull obj, NSUInteger idx, BOOL * _Nonnull stop) {
-        NSString * description = obj;
+        NSString *description = obj;
         description = [description stringByAppendingString:description];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:description];
         
-        NSString * keyForFileScanPercent = [obj stringByAppendingString:kPDFScanViewOffsetY];
+        NSString *keyForFileScanPercent = [obj stringByAppendingString:kPDFScanViewOffsetY];
 
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:keyForFileScanPercent];
         
@@ -157,32 +166,36 @@ static NSString * const kPDFScanViewCurrentPage = @"_kPDFScanViewCurrentPage";
     }
 }
 
-+ (NSNumber *)getFileScanPercentWithUrl:(NSString *)url{
-    NSString * description = [self cachedFileNameForKey:url];
++ (NSNumber *)getFileScanPercentWithUrl:(NSString *)url
+{
+    NSString *description = [self cachedFileNameForKey:url];
     description = [description stringByAppendingString:kPDFScanViewOffsetY];
-    NSNumber * percentNumber = [[NSUserDefaults standardUserDefaults] objectForKey:description];
+    NSNumber *percentNumber = [[NSUserDefaults standardUserDefaults] objectForKey:description];
     return percentNumber;
 }
 
-+ (NSInteger)getFileScanHistoryPageWithUrl:(NSString *)url{
-    NSString * description = [self cachedFileNameForKey:url];
++ (NSInteger)getFileScanHistoryPageWithUrl:(NSString *)url
+{
+    NSString *description = [self cachedFileNameForKey:url];
     description = [description stringByAppendingString:kPDFScanViewCurrentPage];
-    NSNumber * historyPageNumber = [[NSUserDefaults standardUserDefaults] objectForKey:description];
+    NSNumber *historyPageNumber = [[NSUserDefaults standardUserDefaults] objectForKey:description];
     return historyPageNumber.integerValue;
 }
 
-+ (void)setFileScanPercent:(NSNumber*)percent withUrl:(NSString *)url {
++ (void)setFileScanPercent:(NSNumber *)percent withUrl:(NSString *)url
+{
     [[self class] setFileScanPercent:percent withUrl:url currentPage:0];
 }
 
-+ (void)setFileScanPercent:(NSNumber*)percent withUrl:(NSString *)url currentPage:(NSInteger)page{
-    NSString * description = [self cachedFileNameForKey:url];
++ (void)setFileScanPercent:(NSNumber *)percent withUrl:(NSString *)url currentPage:(NSInteger)page
+{
+    NSString *description = [self cachedFileNameForKey:url];
     
-    NSString * keyForPercent = [description stringByAppendingString:kPDFScanViewOffsetY];
+    NSString *keyForPercent = [description stringByAppendingString:kPDFScanViewOffsetY];
     [[NSUserDefaults standardUserDefaults] setObject:percent forKey:keyForPercent];
     
     if (page > 0) {
-        NSString * keyForPage = [description stringByAppendingString:kPDFScanViewCurrentPage];
+        NSString *keyForPage = [description stringByAppendingString:kPDFScanViewCurrentPage];
         [[NSUserDefaults standardUserDefaults] setObject:@(page) forKey:keyForPage];
     }
     

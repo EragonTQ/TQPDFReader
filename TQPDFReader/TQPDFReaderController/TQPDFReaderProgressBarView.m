@@ -10,13 +10,15 @@
 
 @implementation TQPDFReaderProgressBarView
 
--(void)setProgressValue:(float)progressValue{
+- (void)setProgressValue:(float)progressValue
+{
     _progressValue = progressValue;
     [self setNeedsDisplay];
 }
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect
+{
     // Drawing code
     if (_foreGColor == nil) {
         _foreGColor = [UIColor blueColor];
@@ -27,11 +29,11 @@
     
    
      [_backGColor setFill];
-     UIBezierPath * pathLineBackGround=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height) cornerRadius:self.bounds.size.height/2];
+     UIBezierPath *pathLineBackGround=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.bounds.size.width, self.bounds.size.height) cornerRadius:self.bounds.size.height/2];
     [pathLineBackGround fill];
     
     [_foreGColor setFill];
-    UIBezierPath * pathLineLighten=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.bounds.size.width*_progressValue, self.bounds.size.height) cornerRadius:self.bounds.size.height/2];
+    UIBezierPath *pathLineLighten=[UIBezierPath bezierPathWithRoundedRect:CGRectMake(0, 0, self.bounds.size.width*_progressValue, self.bounds.size.height) cornerRadius:self.bounds.size.height/2];
     [pathLineLighten fill];
     
 

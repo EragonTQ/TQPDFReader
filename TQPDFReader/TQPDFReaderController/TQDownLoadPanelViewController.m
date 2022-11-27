@@ -13,21 +13,23 @@
 #import "TQPDFReader.h"
 
 @interface TQDownLoadPanelViewController ()<TQPDFReaderDownloadManagerDelegate>
-@property (nonatomic,weak) IBOutlet UILabel *currentProgressLabel;
-@property (nonatomic,weak) IBOutlet TQPDFReaderProgressBarView * progressView;
-@property (nonatomic,weak) IBOutlet UIButton * continueBtn;
-@property (nonatomic,weak) IBOutlet UIImageView * imageResourceView;
+@property (nonatomic, weak) IBOutlet UILabel *currentProgressLabel;
+@property (nonatomic, weak) IBOutlet TQPDFReaderProgressBarView *progressView;
+@property (nonatomic, weak) IBOutlet UIButton *continueBtn;
+@property (nonatomic, weak) IBOutlet UIImageView *imageResourceView;
 
-@property (nonatomic,weak) IBOutlet UIButton * pauseBtn;
+@property (nonatomic, weak) IBOutlet UIButton *pauseBtn;
 @end
 
 @implementation TQDownLoadPanelViewController
 
-- (void)dealloc{
+- (void)dealloc
+{
     NSLog(@"delloc%@",[self class]);
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
@@ -39,10 +41,11 @@
     [[TQPDFReaderDownloadManager shareInstance] setDownLoadDelegate:self];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.fileNameLabel.text = self.title;
-    NSString * nameFile = [self.title stringByDeletingPathExtension];
+    NSString *nameFile = [self.title stringByDeletingPathExtension];
     if (nameFile && nameFile.length > 15) {
         nameFile = [NSString stringWithFormat:@"%@...%@",[nameFile substringToIndex:8],[nameFile substringFromIndex:nameFile.length -7]];
         nameFile = [NSString stringWithFormat:@"%@.%@",nameFile,[self.title pathExtension]];
@@ -62,13 +65,13 @@
             [self setPauseForUI:NO];
             
         }
-        else if (status < 0){//未下载
+        else if (status < 0) {//未下载
             [self clickContinueLoad:nil];
         }
-        else if ( status == NSURLSessionTaskStateSuspended){
+        else if (status == NSURLSessionTaskStateSuspended) {
             [self setPauseForUI:YES];
         }
-        else{
+        else {
             [self setPauseForUI:YES];
         }
 
@@ -77,33 +80,38 @@
 }
 
 
-- (void)pop_downLoadPanerViewController{
+- (void)pop_downLoadPanerViewController
+{
     [self willMoveToParentViewController:nil];
     [self.view removeFromSuperview];
     [self removeFromParentViewController];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
-- (IBAction)clickPauseLoad:(id)sender{
+- (IBAction)clickPauseLoad:(id)sender
+{
 //    DDLogInfo(@"pause download :%@",[self class]);
     [[TQPDFReaderDownloadManager shareInstance] stopDownLoadFile:nil];
     self.continueBtn.hidden = NO;
     [self setPauseForUI:YES];
 }
 
-- (IBAction)clickContinueLoad:(id)sender{
+- (IBAction)clickContinueLoad:(id)sender
+{
 //     DDLogInfo(@"continue download :%@",[self class]);
     [self setPauseForUI:NO];
-    NSString * urlfile = self.fileUrl;
+    NSString *urlfile = self.fileUrl;
     [[TQPDFReaderDownloadManager shareInstance]  startDownLoadFile:urlfile];
 
 }
 
-- (void)setPauseForUI:(BOOL )isPause{
+- (void)setPauseForUI:(BOOL)isPause
+{
     self.continueBtn.hidden = isPause;
     self.currentProgressLabel.hidden = isPause;
     self.pauseBtn.hidden = isPause;
@@ -112,7 +120,8 @@
     [self.continueBtn setTitle:@"继续下载" forState:UIControlStateNormal];
 }
 
-- (void)setErrorStatusForUI:(BOOL)isError{
+- (void)setErrorStatusForUI:(BOOL)isError
+{
     self.progressView.hidden = YES;
     self.pauseBtn.hidden = YES;
     self.continueBtn.hidden = NO;
@@ -122,7 +131,8 @@
 
 
 #pragma mark -- TQPDFReaderDownloadManagerDelegate
-- (void)downLoadingPercent:(float)percentDownload totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite{
+- (void)downLoadingPercent:(float)percentDownload totalBytesWritten:(int64_t)totalBytesWritten totalBytesExpectedToWrite:(int64_t)totalBytesExpectedToWrite
+{
     float totalRecived =  (float)totalBytesWritten/(1024.0*1024);
     float totalExpected =  (float)totalBytesExpectedToWrite/(1024.0*1024);
 
@@ -130,7 +140,8 @@
     self.progressView.progressValue = percentDownload;
 }
 
-- (void)downLoadFinished:(NSString *)localPathFile error:(NSError *)error{
+- (void)downLoadFinished:(NSString *)localPathFile error:(NSError *)error
+{
     if (error) {
         [self setErrorStatusForUI:YES];
         [SVProgressHUD showErrorWithStatus:@"下载失败"];

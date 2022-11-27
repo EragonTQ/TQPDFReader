@@ -45,15 +45,15 @@ typedef void(^TQPDFEventBlock)(TQLPDFEvent event);
 
 
 @interface TQPDFScanViewController : UIViewController
-+(instancetype)pdfScanVC;
++ (instancetype)pdfScanVC;
 
 
-@property (nonatomic,strong) NSString * urlFile;
-@property (assign, nonatomic) ResourceType_PDFReader  resourseType;
-@property (nonatomic,assign) BOOL localFileType;
-@property (nonatomic,assign) UILabel * customTitleLabel;
-@property (nonatomic,strong) UIColor *quickLocationBtnBGColor;
-@property (nonatomic,strong) UIColor *quickLocationBtnTitleColor;
+@property (nonatomic, strong) NSString *urlFile;
+@property (nonatomic, assign) ResourceType_PDFReader  resourseType;
+@property (nonatomic, assign) BOOL localFileType;
+@property (nonatomic, assign) UILabel *customTitleLabel;
+@property (nonatomic, strong) UIColor *quickLocationBtnBGColor;
+@property (nonatomic, strong) UIColor *quickLocationBtnTitleColor;
 
 
 /** <#name#> */

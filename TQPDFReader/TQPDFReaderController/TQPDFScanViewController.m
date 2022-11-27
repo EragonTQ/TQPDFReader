@@ -34,18 +34,18 @@
 
 + (CFTimeInterval)fadeDuration
 {
-    return 0.000; // iOS bug (flickering tiles) workaround
+    return 0.1; // iOS bug (flickering tiles) workaround
 }
 
 #pragma mark - ReaderContentTile instance methods
 
 - (instancetype)init
 {
-    if ((self = [super init])) // Initialize superclass
-    {
-        self.levelsOfDetail = LEVELS_OF_DETAIL; // Zoom levels
-
-        self.levelsOfDetailBias = (LEVELS_OF_DETAIL - 1); // Bias
+    if ((self = [super init])) {// Initialize superclass
+//
+//        self.levelsOfDetail = LEVELS_OF_DETAIL; // Zoom levels
+//
+//        self.levelsOfDetailBias = (LEVELS_OF_DETAIL - 1); // Bias
 
         UIScreen *mainScreen = [UIScreen mainScreen]; // Main screen
 
@@ -62,6 +62,7 @@
         CGFloat sizeOfTiles = ((max < 512.0f) ? 512.0f : 1024.0f);
 
         self.tileSize = CGSizeMake(sizeOfTiles, sizeOfTiles);
+        
     }
 
     return self;
@@ -87,43 +88,50 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 
 @implementation TQ_UIActivityType
 
-- (instancetype)initWithTitle:(NSString *)title type:(NSString *)type{
+- (instancetype)initWithTitle:(NSString *)title type:(NSString *)type
+{
     if (self = [super init]) {
         self.title = title;
         self.type = type;
     }
     return self;
 }
-- (NSString *)activityTitle{
+- (NSString *)activityTitle
+{
     return self.title;
 }
-- (NSString *)activityType{
+- (NSString *)activityType
+{
     return self.type;
 }
-- (UIImage *)activityImage{
+- (UIImage *)activityImage
+{
     NSString *weixinImageString = @"share_wechat";
     NSString *friendsImageString = @"share_qq";
     NSString *imageName = [self.type isEqualToString:kActivityServiceWeixinChat] ? weixinImageString: friendsImageString;
     NSData *imageData = [imageName dataUsingEncoding:NSUTF8StringEncoding];
     return [UIImage imageWithData:imageData scale:2.0];
 }
-- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems{
+- (BOOL)canPerformWithActivityItems:(NSArray *)activityItems
+{
     return YES;
 }
-- (void)prepareWithActivityItems:(NSArray *)activityItems{
+- (void)prepareWithActivityItems:(NSArray *)activityItems
+{
     
 }
 
-- (void)performActivity {
+- (void)performActivity
+{
     //这里就可以关联外面的app进行分享操作了
     //也可以进行一些数据的保存等操作
     //操作的最后必须使用下面方法告诉系统分享结束了
     if ([self.type isEqualToString:kActivityServiceWeixinChat]) {
         NSLog(@"在这里可以实现微信分享代码");
-    }else  if ([self.type isEqualToString:kActivityServiceQQFriends]) {
+    } else  if ([self.type isEqualToString:kActivityServiceQQFriends]) {
         NSLog(@"在这里可以实现微信分享代码");
     }
-    else{
+    else {
         NSLog(@"在这里可以实现朋友圈分享代码");
     }
     [self activityDidFinish:YES];
@@ -137,7 +145,8 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
 
 @implementation TQPDFScrollView
 
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer{
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
+{
     return YES;
 }
 
@@ -151,21 +160,26 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
     return [__TQReaderContentTile class];
 }
 
--(void)dealloc
+- (void)dealloc
 {
     NSLog(@"%s",__func__);
 }
 
-- (void)setPageRef:(CGPDFPageRef)pageRef{
-    _pageRef = pageRef;
-   /* if (!_pageRef) {
-        return;
+- (void)setPageRef:(CGPDFPageRef)pageRef
+{
+    BOOL needRender = NO;
+    if (_pageRef != pageRef) {
+        needRender = YES;
     }
-    */
-    [self setNeedsDisplay];
+    _pageRef = pageRef;
+    if (needRender) {
+        [self setNeedsDisplay];
+    }
+  
 }
 
--(void)drawInContext:(CGContextRef)context {
+- (void)drawInContext:(CGContextRef)context
+{
     //Quartz坐标系和UIView坐标系不一样所致，调整坐标系，使pdf正立
     CGContextTranslateCTM(context, 0.0, self.bounds.size.height);
     CGContextScaleCTM(context, 1.0, -1.0);
@@ -173,49 +187,59 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
     //创建一个仿射变换，该变换基于将PDF页的BOX映射到指定的矩形中。
     CGAffineTransform pdfTransform = CGPDFPageGetDrawingTransform(_pageRef, kCGPDFCropBox, self.bounds, 0, true);
     CGContextConcatCTM(context, pdfTransform);
+    
+    
+    CGContextSetInterpolationQuality (context, kCGInterpolationHigh );
+    CGContextSetRenderingIntent (context, kCGRenderingIntentDefault );
     //将pdf绘制到上下文中
     CGContextDrawPDFPage(context, _pageRef);
     
+    CGContextRestoreGState(context);
+   
 }
 
 
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
+- (void)drawRect:(CGRect)rect
+{
     // Drawing code
 //    [super drawRect:rect];
     if (!_pageRef) {
         return;
     }
-    [self drawInContext:UIGraphicsGetCurrentContext()];
+    CGContextRef context  = UIGraphicsGetCurrentContext ();
+ 
+    [self drawInContext:context];
+   
     return;
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGRect mediaRect = CGPDFPageGetBoxRect(_pageRef, kCGPDFCropBox);//pdf内容的rect
-    
-    CGContextRetain(context);
-    CGContextSaveGState(context);
-    
-    [[UIColor whiteColor] set];
-    CGContextFillRect(context, rect);//填充背景色，否则为全黑色；
-    CGFloat rectScale = rect.size.width / rect.size.height;
-    CGFloat mediaScale = mediaRect.size.width/ mediaRect.size.height;
-    CGFloat scalePdf = 0.0;
-    if (mediaScale >= rectScale ) {
-        scalePdf = rect.size.width / mediaRect.size.width;
-    }
-    else
-        scalePdf = rect.size.height / mediaRect.size.height;
-    
-    NSInteger heightScale = mediaRect.size.height * scalePdf;
-    
-    CGContextTranslateCTM(context, 0, heightScale);//设置位移，x，y;
-    CGContextScaleCTM(context, scalePdf, -scalePdf);//缩放倍数--x轴和y轴
-    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
-    CGContextSetRenderingIntent(context, kCGRenderingIntentDefault);
-    CGContextDrawPDFPage(context, _pageRef);//绘制pdf
-    
-    CGContextRestoreGState(context);
-    CGContextRelease(context);
+//    CGContextRef context = UIGraphicsGetCurrentContext();
+//    CGRect mediaRect = CGPDFPageGetBoxRect(_pageRef, kCGPDFCropBox);//pdf内容的rect
+//
+//    CGContextRetain(context);
+//    CGContextSaveGState(context);
+//
+//    [[UIColor whiteColor] set];
+//    CGContextFillRect(context, rect);//填充背景色，否则为全黑色；
+//    CGFloat rectScale = rect.size.width / rect.size.height;
+//    CGFloat mediaScale = mediaRect.size.width/ mediaRect.size.height;
+//    CGFloat scalePdf = 0.0;
+//    if (mediaScale >= rectScale) {
+//        scalePdf = rect.size.width / mediaRect.size.width;
+//    }
+//    else
+//        scalePdf = rect.size.height / mediaRect.size.height;
+//
+//    NSInteger heightScale = mediaRect.size.height * scalePdf;
+//
+//    CGContextTranslateCTM(context, 0, heightScale);//设置位移，x，y;
+//    CGContextScaleCTM(context, scalePdf, -scalePdf);//缩放倍数--x轴和y轴
+//    CGContextSetInterpolationQuality(context, kCGInterpolationHigh);
+//    CGContextSetRenderingIntent(context, kCGRenderingIntentDefault);
+//    CGContextDrawPDFPage(context, _pageRef);//绘制pdf
+//
+//    CGContextRestoreGState(context);
+//    CGContextRelease(context);
 }
 
 @end
@@ -224,25 +248,25 @@ static NSInteger pageOffSetY = 0;
 
 
 @interface TQPDFScanViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout,UIScrollViewDelegate,WKNavigationDelegate>
-@property (assign, nonatomic) CGPDFDocumentRef  pdfRef;
-@property (assign, nonatomic) NSInteger pageTotal;//总页数
-@property (assign, nonatomic) NSInteger currentPage;//当前页
+@property (nonatomic, assign) CGPDFDocumentRef  pdfRef;
+@property (nonatomic, assign) NSInteger pageTotal;//总页数
+@property (nonatomic, assign) NSInteger currentPage;//当前页
 
-@property (strong, nonatomic) NSString *pathBook;
-@property (weak, nonatomic) IBOutlet UICollectionView *collection;
-@property (nonatomic,weak) IBOutlet TQPDFScrollView * scrollView;
-@property (weak, nonatomic) IBOutlet UIImageView *imageView;
-@property (weak, nonatomic) IBOutlet UIButton *saveImgBtn;
-@property (weak, nonatomic) IBOutlet UILabel *pageLabel;
+@property (nonatomic, strong) NSString *pathBook;
+@property (nonatomic, weak) IBOutlet UICollectionView *collection;
+@property (nonatomic, weak) IBOutlet TQPDFScrollView *scrollView;
+@property (nonatomic, weak) IBOutlet UIImageView *imageView;
+@property (nonatomic, weak) IBOutlet UIButton *saveImgBtn;
+@property (nonatomic, weak) IBOutlet UILabel *pageLabel;
 
-@property (nonatomic, strong) TQDownLoadPanelViewController * downLoadPanelVC;
-@property (nonatomic, strong) UIButton * quickLocationBtn;
+@property (nonatomic, strong) TQDownLoadPanelViewController *downLoadPanelVC;
+@property (nonatomic, strong) UIButton *quickLocationBtn;
 @property (nonatomic, assign) BOOL isPanG;
 /** heightCache */
 @property (nonatomic, strong) NSCache *cacheHeight;
 /** webview */
-@property (nonatomic, strong) WKWebView  *webView;
-@property (nonatomic, strong) UIButton  *rotateButton;
+@property (nonatomic, strong) WKWebView *webView;
+@property (nonatomic, strong) UIButton *rotateButton;
 /** rotate status */
 @property (nonatomic, assign) BOOL isRotated;
 
@@ -253,7 +277,8 @@ static NSInteger pageOffSetY = 0;
 
 @implementation TQPDFScanViewController
 
-- (void)dealloc{
+- (void)dealloc
+{
     for (UIGestureRecognizer * ges in self.view.gestureRecognizers) {
         [self.view removeGestureRecognizer:ges];
     }
@@ -262,10 +287,11 @@ static NSInteger pageOffSetY = 0;
     }
     
     [[NSNotificationCenter defaultCenter]removeObserver:self];
+    CGPDFDocumentRelease(_pdfRef);
     NSLog(@"dealloc%@",[self class]);
 }
 
-+(instancetype)pdfScanVC
++ (instancetype)pdfScanVC
 {
     TQPDFScanViewController *pdfVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQPDFScanViewController"];
     return pdfVC;
@@ -295,7 +321,7 @@ static NSInteger pageOffSetY = 0;
 //        self.view.transform = CGAffineTransformIdentity;
         NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationPortrait];
         [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
-    }else{
+    } else {
 //        self.view.transform = CGAffineTransformMakeRotation(M_PI_2);
         NSNumber *orientationTarget = [NSNumber numberWithInt:UIInterfaceOrientationLandscapeLeft];
         [[UIDevice currentDevice] setValue:orientationTarget forKey:@"orientation"];
@@ -303,7 +329,8 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self.view setBackgroundColor:[UIColor whiteColor]];
@@ -326,11 +353,11 @@ static NSInteger pageOffSetY = 0;
     _pageLabel.hidden = YES;
     pageOffSetY = 0;
     
-    UITapGestureRecognizer * oneTapG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesHandleEvent:)];
+    UITapGestureRecognizer *oneTapG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesHandleEvent:)];
     oneTapG.numberOfTapsRequired = 1;
     [self.view addGestureRecognizer:oneTapG];
     
-    UITapGestureRecognizer * doubleG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesHandleEvent:)];
+    UITapGestureRecognizer *doubleG = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapGesHandleEvent:)];
     doubleG.numberOfTapsRequired = 2;
     [self.view addGestureRecognizer:doubleG];
     [oneTapG requireGestureRecognizerToFail:doubleG];
@@ -353,7 +380,7 @@ static NSInteger pageOffSetY = 0;
         [_quickLocationBtn setImage:PDFReaderImage(@"PdfReader_slider") forState:UIControlStateNormal];
         [_quickLocationBtn setImageEdgeInsets:UIEdgeInsetsMake(5, 5, 5, 5)];
         _quickLocationBtn.hidden = YES;
-        UIPanGestureRecognizer * panG = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(quickLocationPanEvent:)];
+        UIPanGestureRecognizer *panG = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(quickLocationPanEvent:)];
         [_quickLocationBtn addGestureRecognizer:panG];
         
         [self.view addSubview:_quickLocationBtn];
@@ -364,16 +391,15 @@ static NSInteger pageOffSetY = 0;
     
     if (self.openByWebView &&  [self.urlFile hasPrefix:@"http"]) {
         self.collection.hidden = YES;
-        WKWebViewConfiguration * config = [WKWebViewConfiguration new];
+        WKWebViewConfiguration *config = [WKWebViewConfiguration new];
         config.suppressesIncrementalRendering = YES;
         _webView  = [[WKWebView alloc] initWithFrame:CGRectMake(0, 0, CGRectGetWidth(self.view.frame), CGRectGetHeight(self.view.frame)) configuration:config];
         _urlFile = [_urlFile stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
          _webView.navigationDelegate = self;
-        NSURL * url = [NSURL URLWithString:self.urlFile];
+        NSURL *url = [NSURL URLWithString:self.urlFile];
         [_webView loadRequest:[NSURLRequest requestWithURL:url]];
         [self.scrollView addSubview:_webView];
         
-     
         
         [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.leading.mas_equalTo(0);
@@ -385,7 +411,8 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)enableRightShare{
+- (void)enableRightShare
+{
     __weak typeof(self) weakSelf = self;
     [[TQPDFShareTools class]shareViewController:self filePath:self.urlFile shareBlock:^(NSString * _Nullable activityType, BOOL completed, NSArray * _Nullable returnedItems, NSError * _Nullable activityError) {
         __strong typeof(self) strongSelf = weakSelf;
@@ -399,7 +426,8 @@ static NSInteger pageOffSetY = 0;
 }
 
 
-- (void)viewWillDisappear:(BOOL)animated{
+- (void)viewWillDisappear:(BOOL)animated
+{
     [super viewWillDisappear:animated];
     self.fd_interactivePopDisabled = NO;
     pageOffSetY = _collection.contentOffset.y;
@@ -418,10 +446,11 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)viewDidAppear:(BOOL)animated{
+- (void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     self.currentPage = [TQPDFReaderFileManager getFileScanHistoryPageWithUrl:self.urlFile];
-    NSNumber * pageYNumber = [TQPDFReaderFileManager getFileScanPercentWithUrl:self.urlFile];
+    NSNumber *pageYNumber = [TQPDFReaderFileManager getFileScanPercentWithUrl:self.urlFile];
     pageOffSetY = pageYNumber ? [pageYNumber integerValue] :pageOffSetY;
     if (pageOffSetY > 0) {
         [_collection setContentOffset:CGPointMake(0, pageOffSetY)];
@@ -431,7 +460,8 @@ static NSInteger pageOffSetY = 0;
     [self setPageNumber:_collection.contentOffset.y];
 }
 
-- (void)viewWillAppear:(BOOL)animated{
+- (void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
     self.fd_interactivePopDisabled = YES;
     if (self.customTitleLabel) {
@@ -448,14 +478,14 @@ static NSInteger pageOffSetY = 0;
     }
     
     if ([TQPDFReaderFileManager isExistFileFromUrl:self.urlFile]) {
-        NSString * localFilePath = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:self.urlFile];
+        NSString *localFilePath = [TQPDFReaderFileManager getCompleteFileLocalPathFromUrl:self.urlFile];
         [self loadLocalResourseFile:localFilePath];
     }
-    else{
+    else {
         self.downLoadPanelVC.fileUrl = self.urlFile;
         self.downLoadPanelVC.resourseType = self.resourseType;
         __weak typeof(self) weakSelf = self;
-        self.downLoadPanelVC.finishedDownLoaded = ^(NSString * downloadedFilePath){
+        self.downLoadPanelVC.finishedDownLoaded = ^(NSString *downloadedFilePath) {
             [weakSelf loadLocalResourseFile:downloadedFilePath];
         };
         
@@ -464,7 +494,8 @@ static NSInteger pageOffSetY = 0;
     [_collection reloadData];
 }
 
-- (void)loadLocalResourseFile:(NSString * )localPath{
+- (void)loadLocalResourseFile:(NSString *)localPath
+{
     if (!localPath) {
         return;
     }
@@ -472,7 +503,7 @@ static NSInteger pageOffSetY = 0;
     if (typeResource != ResourceType_PDFReader_other) {//修正
         _resourseType = typeResource;
     }
-    else if (typeResource == ResourceType_PDFReader_other && _resourseType == ResourceType_PDFReader_image){//修正
+    else if (typeResource == ResourceType_PDFReader_other && _resourseType == ResourceType_PDFReader_image) {//修正
         _resourseType = ResourceType_PDFReader_other;
     }
     
@@ -483,7 +514,7 @@ static NSInteger pageOffSetY = 0;
         self.quickLocationBtn = nil;
         [self.imageView setImage:[UIImage imageWithContentsOfFile:localPath]];
     }
-    else /*if (self.resourseType == ResourceType_PDFReader_pdf )*/{
+    else {/*if (self.resourseType == ResourceType_PDFReader_pdf )*/
         if ([localPath hasPrefix:@"http"]) {//在线文档
             return;
         }
@@ -493,7 +524,6 @@ static NSInteger pageOffSetY = 0;
         if (mediaRect.size.width) {
             cellHeight = self.view.frame.size.width * mediaRect.size.height/ mediaRect.size.width;
         }
-        
         if (!_pdfRef) {
             if (self.openErrorBlock) {
                 self.openErrorBlock([NSError errorWithDomain:localPath code:-1 userInfo:nil]);
@@ -509,27 +539,32 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)reLayoutCollectionView:(id)sender{
+- (void)reLayoutCollectionView:(id)sender
+{
     [_collection reloadData];
 }
 
 #pragma mark --UICollectionViewDelegate
-- (PDFPageCollectionCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (PDFPageCollectionCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
 //    NSLog(@"cellforro\n");
-    PDFPageCollectionCell * cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
+    PDFPageCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
     cell.pageRef = CGPDFDocumentGetPage(_pdfRef, indexPath.row+1);
     return cell;
 }
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section{
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return _pageTotal;
 }
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView{
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return 1;
 }
 
-- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath{
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout *)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath
+{
 //    NSInteger heightScale = 0;
 //    if ([self.cacheHeight objectForKey:@(indexPath.row + 1)]) {
 //        heightScale = [[self.cacheHeight objectForKey:@(indexPath.row + 1)] integerValue];
@@ -546,7 +581,8 @@ static NSInteger pageOffSetY = 0;
 }
 
 
-- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+- (void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
     
 }
 
@@ -557,7 +593,7 @@ static NSInteger pageOffSetY = 0;
         static float lastScale = 1;
         if (scale - lastScale > 0) {
             self.eventBlock(TQLPDFEventScaleAdd);
-        }else if (scale - lastScale < 0){
+        } else if (scale - lastScale < 0) {
             self.eventBlock(TQLPDFEventScaleReduce);
         }
         lastScale = scale;
@@ -565,27 +601,31 @@ static NSInteger pageOffSetY = 0;
     }
 }
 
-- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView {
+- (UIView *)viewForZoomingInScrollView:(UIScrollView *)scrollView
+{
     if (self.resourseType == ResourceType_PDFReader_pdf) {
         return _collection;
     }
-    else if (self.resourseType == ResourceType_PDFReader_image){
+    else if (self.resourseType == ResourceType_PDFReader_image) {
         return _imageView;
     }
     return _collection;
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView{
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
     _pageLabel.hidden = YES;
     _quickLocationBtn.hidden = YES;
 }
 
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate{
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
     _pageLabel.hidden = YES;
     _quickLocationBtn.hidden = YES;
 }
 
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView{
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
     _pageLabel.hidden = NO;
     _quickLocationBtn.hidden = NO;
     [self setPageNumber:scrollView.contentOffset.y];
@@ -597,10 +637,10 @@ static NSInteger pageOffSetY = 0;
     
     float  quickLocationY = 0;
     if (scrollView.contentSize.height - scrollView.frame.size.height) {
-        quickLocationY = (scrollView.contentOffset.y)/(scrollView.contentSize.height - scrollView.frame.size.height ) * (self.view.frame.size.height - _quickLocationBtn.frame.size.height);
+        quickLocationY = (scrollView.contentOffset.y)/(scrollView.contentSize.height - scrollView.frame.size.height) * (self.view.frame.size.height - _quickLocationBtn.frame.size.height);
     }
   
-    if (quickLocationY > (self.view.frame.size.height- _quickLocationBtn.frame.size.height)){
+    if (quickLocationY > (self.view.frame.size.height- _quickLocationBtn.frame.size.height)) {
         quickLocationY = self.view.frame.size.height- _quickLocationBtn.frame.size.height;
     }
     
@@ -611,11 +651,12 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)setPageNumber:(CGFloat)_offsetY{
-    NSArray * arraryVisible = _collection.visibleCells ;
+- (void)setPageNumber:(CGFloat)_offsetY
+{
+    NSArray *arraryVisible = _collection.visibleCells ;
     for (PDFPageCollectionCell * cell  in arraryVisible) {
         if ((cell.frame.origin.y - _offsetY)< self.view.frame.size.height/2 && (cell.frame.origin.y + cell.frame.size.height - _offsetY) >self.view.frame.size.height/2) {
-            NSIndexPath * indexPath = [_collection indexPathForCell:cell];
+            NSIndexPath *indexPath = [_collection indexPathForCell:cell];
             NSInteger pageRow = indexPath.row +1;
             _currentPage = pageRow;
             _pageLabel.text = [NSString stringWithFormat:@"%ld/%ld",pageRow,_pageTotal];
@@ -625,7 +666,8 @@ static NSInteger pageOffSetY = 0;
 
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
@@ -648,8 +690,7 @@ static NSInteger pageOffSetY = 0;
     if (!error) {
         message = @"成功保存到相册";
         [SVProgressHUD showSuccessWithStatus:@"保存成功~"];
-    }else
-    {
+    } else {
         message = [error description];
         [SVProgressHUD showErrorWithStatus:@"保存失败~"];
     }
@@ -658,11 +699,13 @@ static NSInteger pageOffSetY = 0;
 
 #pragma mark -Event
 
-- (IBAction)clickSaveEvent:(id)sender{
+- (IBAction)clickSaveEvent:(id)sender
+{
     UIImageWriteToSavedPhotosAlbum(self.imageView.image, self, @selector(imageSavedToPhotosAlbum:didFinishSavingWithError:contextInfo:), nil);
 }
 
-- (void)tapGesHandleEvent:(UITapGestureRecognizer *)ges{
+- (void)tapGesHandleEvent:(UITapGestureRecognizer *)ges
+{
     if (ges.numberOfTapsRequired ==2) {
         CGFloat currentZoom =  _scrollView.zoomScale;
         if (currentZoom >1.01) {
@@ -672,7 +715,7 @@ static NSInteger pageOffSetY = 0;
             [_scrollView setZoomScale:1.5 animated:YES];
         
     }
-    else{
+    else {
         BOOL statusHidden = self.navigationController.navigationBarHidden;
 //        self.rotateButton.hidden = statusHidden;
         [self.navigationController setNavigationBarHidden:!statusHidden animated:YES];
@@ -680,11 +723,12 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (void)quickLocationPanEvent:(UIPanGestureRecognizer *)panG{
+- (void)quickLocationPanEvent:(UIPanGestureRecognizer *)panG
+{
     if (panG.state == UIGestureRecognizerStateBegan) {
         _isPanG = YES;
     }
-    else if (panG.state != UIGestureRecognizerStateChanged){
+    else if (panG.state != UIGestureRecognizerStateChanged) {
         _isPanG = NO;
         _pageLabel.hidden = YES;
         _quickLocationBtn.hidden = YES;
@@ -709,21 +753,24 @@ static NSInteger pageOffSetY = 0;
     
 }
 
-- (UIColor *)quickLocationBtnBGColor{
+- (UIColor *)quickLocationBtnBGColor
+{
     if (!_quickLocationBtnBGColor) {
         _quickLocationBtnBGColor = self.pageLabel.backgroundColor;
     }
     return _quickLocationBtnBGColor;
 }
 
-- (UIColor *)quickLocationBtnTitleColor{
+- (UIColor *)quickLocationBtnTitleColor
+{
     if (!_quickLocationBtnTitleColor) {
         _quickLocationBtnTitleColor = self.pageLabel.textColor;
     }
     return _quickLocationBtnTitleColor;
 }
 
-- (TQDownLoadPanelViewController *)downLoadPanelVC{
+- (TQDownLoadPanelViewController *)downLoadPanelVC
+{
     if (!_downLoadPanelVC) {
         _downLoadPanelVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQDownLoadPanelViewController"];
         _downLoadPanelVC.title = self.title;
@@ -736,10 +783,12 @@ static NSInteger pageOffSetY = 0;
 }
 
 
-- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation{
+- (void)webView:(WKWebView *)webView didFinishNavigation:(null_unspecified WKNavigation *)navigation
+{
     NSLog(@"finished");
 }
-- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error{
+- (void)webView:(WKWebView *)webView didFailNavigation:(null_unspecified WKNavigation *)navigation withError:(NSError *)error
+{
     NSLog(@"test");
     if (self.openErrorBlock) {
         self.openErrorBlock(error);
@@ -758,4 +807,5 @@ static NSInteger pageOffSetY = 0;
 */
 
 @end
+
 
