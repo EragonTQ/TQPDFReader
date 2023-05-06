@@ -34,7 +34,7 @@
 
 + (CFTimeInterval)fadeDuration
 {
-    return 0.1; // iOS bug (flickering tiles) workaround
+    return 0.000; // iOS bug (flickering tiles) workaround
 }
 
 #pragma mark - ReaderContentTile instance methods
@@ -189,12 +189,13 @@ static NSString * const kActivityServiceQQFriends = @"ActivityServiceQQFriends";
     CGContextConcatCTM(context, pdfTransform);
     
     
-    CGContextSetInterpolationQuality (context, kCGInterpolationHigh );
+    CGContextSetInterpolationQuality (context, kCGInterpolationDefault );
     CGContextSetRenderingIntent (context, kCGRenderingIntentDefault );
     //将pdf绘制到上下文中
     CGContextDrawPDFPage(context, _pageRef);
     
-    CGContextRestoreGState(context);
+//    CGContextRestoreGState(context);//会崩溃ios 12.2
+   
    
 }
 
@@ -549,6 +550,7 @@ static NSInteger pageOffSetY = 0;
 {
 //    NSLog(@"cellforro\n");
     PDFPageCollectionCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"CELL" forIndexPath:indexPath];
+    ///CGPDFPageRef
     cell.pageRef = CGPDFDocumentGetPage(_pdfRef, indexPath.row+1);
     return cell;
 }
@@ -807,5 +809,4 @@ static NSInteger pageOffSetY = 0;
 */
 
 @end
-
 
