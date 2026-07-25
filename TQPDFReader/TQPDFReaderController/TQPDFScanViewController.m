@@ -776,6 +776,12 @@ static NSInteger pageOffSetY = 0;
     if (!_downLoadPanelVC) {
         _downLoadPanelVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQDownLoadPanelViewController"];
         _downLoadPanelVC.title = self.title;
+        __weak typeof(self) weakSelf = self;
+        _downLoadPanelVC.logBlock = ^(TQPDFLogEvent event, NSString *message, NSDictionary<NSString *,id> *info) {
+            if (weakSelf.logBlock) {
+                weakSelf.logBlock(event, message, info);
+            }
+        };
         [self addChildViewController:_downLoadPanelVC];
         [self.view addSubview:_downLoadPanelVC.view];
         [_downLoadPanelVC didMoveToParentViewController:self];
@@ -809,4 +815,3 @@ static NSInteger pageOffSetY = 0;
 */
 
 @end
-

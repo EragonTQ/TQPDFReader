@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 #import "TQPDFReaderFileManager.h"
+#import "TQPDFReaderLog.h"
 NS_ASSUME_NONNULL_BEGIN
 
 
@@ -60,6 +61,9 @@ typedef void(^TQPDFEventBlock)(TQLPDFEvent event);
 @property (nonatomic, copy) TQPDFEventBlock eventBlock;
 /** openErrorBlock */
 @property (nonatomic, copy) OpenErrorBlock openErrorBlock;
+
+/** 下载阶段日志回调。未设置时 SDK 不产生额外行为。 */
+@property (nonatomic, copy, nullable) TQPDFLogBlock logBlock;
 
 /** 分享回调 */
 @property (nonatomic, copy) ShareBlock shareBlock;

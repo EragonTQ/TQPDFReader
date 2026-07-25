@@ -8,12 +8,14 @@
 
 #import <UIKit/UIKit.h>
 #import "TQPDFReaderFileManager.h"
+#import "TQPDFReaderLog.h"
 typedef void (^FinishedDownLoad)(NSString * downLoadedlocalPath);
 
 @interface TQDownLoadPanelViewController : UIViewController
 @property (nonatomic,weak) IBOutlet UILabel * fileNameLabel;
 @property (nonatomic,strong) NSString * fileUrl;
 @property (nonatomic,copy) FinishedDownLoad  finishedDownLoaded;
+@property (nonatomic,copy) TQPDFLogBlock logBlock;
 @property (assign, nonatomic) ResourceType_PDFReader  resourseType;
 - (IBAction)clickContinueLoad:(id)sender;
 - (IBAction)clickPauseLoad:(id)sender;

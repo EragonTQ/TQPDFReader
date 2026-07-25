@@ -106,6 +106,11 @@
 //     DDLogInfo(@"continue download :%@",[self class]);
     [self setPauseForUI:NO];
     NSString *urlfile = self.fileUrl;
+    if (self.logBlock) {
+        self.logBlock(TQPDFLogEventDownloadStart,
+                      @"PDF download started",
+                      urlfile ? @{TQPDFLogInfoURLKey: urlfile} : nil);
+    }
     [[TQPDFReaderDownloadManager shareInstance]  startDownLoadFile:urlfile];
 
 }
@@ -138,17 +143,47 @@
 
     self.currentProgressLabel.text = [NSString stringWithFormat:@"下载中...(%.2fM/%.2fM)",totalRecived,totalExpected];
     self.progressView.progressValue = percentDownload;
+    if (self.logBlock) {
+        NSMutableDictionary *info = [@{
+            TQPDFLogInfoProgressKey: @(percentDownload),
+            TQPDFLogInfoBytesWrittenKey: @(totalBytesWritten),
+            TQPDFLogInfoTotalBytesKey: @(totalBytesExpectedToWrite)
+        } mutableCopy];
+        if (self.fileUrl) {
+            info[TQPDFLogInfoURLKey] = self.fileUrl;
+        }
+        self.logBlock(TQPDFLogEventDownloadProgress, @"PDF download progress updated", info);
+    }
 }
 
 - (void)downLoadFinished:(NSString *)localPathFile error:(NSError *)error
 {
     if (error) {
+        if (self.logBlock) {
+            NSMutableDictionary *info = [@{TQPDFLogInfoErrorKey: error} mutableCopy];
+            if (self.fileUrl) {
+                info[TQPDFLogInfoURLKey] = self.fileUrl;
+            }
+            self.logBlock(TQPDFLogEventDownloadFailure, @"PDF download failed", info);
+        }
         [self setErrorStatusForUI:YES];
         [SVProgressHUD showErrorWithStatus:@"下载失败"];
         return;
     }
   
-    self.finishedDownLoaded(localPathFile);
+    if (self.logBlock) {
+        NSMutableDictionary *info = [NSMutableDictionary dictionary];
+        if (self.fileUrl) {
+            info[TQPDFLogInfoURLKey] = self.fileUrl;
+        }
+        if (localPathFile) {
+            info[TQPDFLogInfoLocalPathKey] = localPathFile;
+        }
+        self.logBlock(TQPDFLogEventDownloadSuccess, @"PDF download completed", info);
+    }
+    if (self.finishedDownLoaded) {
+        self.finishedDownLoaded(localPathFile);
+    }
     [self pop_downLoadPanerViewController];
 }
 

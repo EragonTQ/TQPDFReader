@@ -21,3 +21,16 @@
 ### 会对podSpec 里面的source 指定的源代码文件进行编译校验，如果采用的是：git 的是对远程仓库里面的校验
 ### 如果采用的是：path  是对本地的校验，注意区分，否则本地修改再多的发现都对校验结果没有影响的
 ### 校验通过后，cocopods 会将xxx.podSpec 文件在本地的仓库TQRepo 里面创建对应的版本号文件夹，并将TQPDFReader.podSpec 复制进去；最后会推送到TQRepo对应的远程仓库里面
+
+## 下载日志回调
+
+`TQPDFScanViewController` 提供结构化的下载日志回调，可用于接入宿主 App 的日志或埋点系统：
+
+```objc
+pdfVC.logBlock = ^(TQPDFLogEvent event, NSString *message, NSDictionary<NSString *, id> *info) {
+    NSLog(@"TQPDFReader event=%ld message=%@ info=%@", (long)event, message, info);
+};
+```
+
+当前事件包括下载开始、下载进度、下载成功和下载失败。进度事件的 `info` 中包含
+`TQPDFLogInfoProgressKey`、`TQPDFLogInfoBytesWrittenKey` 和 `TQPDFLogInfoTotalBytesKey`。
