@@ -231,7 +231,7 @@ didCompleteWithError:(nullable NSError *)error
         [TQDownLoadedTempDataManager removeResumeData:task.taskDescription];
         NSLog(@"error:%@",error);
     }
-    if (error &&error.code != -999 && self.downLoadDelegate && [self.downLoadDelegate respondsToSelector:@selector(downLoadFinished:error:)]) {
+    if (error && self.downLoadDelegate && [self.downLoadDelegate respondsToSelector:@selector(downLoadFinished:error:)]) {
         [self.downLoadDelegate downLoadFinished:@""  error:error];
     }
 }
@@ -362,6 +362,9 @@ didCompleteWithError:(nullable NSError *)error
         }
     } @catch (NSException *exception) {
         NSLog(@"<ResumeDataCorrect> catch exp %@", exception);
+        NSString *msg = [NSString stringWithFormat:@"<ResumeDataCorrect> catch exp@",exception];        
+        [self.downLoadDelegate downLoadFinished:@""  error:[NSError errorWithDomain:msg code:-1 userInfo:nil]];
+    }
     } @finally {
         // Reencode archived object
         NSData *result = [NSPropertyListSerialization dataWithPropertyList:archive format:NSPropertyListBinaryFormat_v1_0 options:0 error:&err];
