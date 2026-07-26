@@ -32,12 +32,12 @@
 @interface UINavigationController (TQFullscreenPopGesture)
 
 /// The gesture recognizer that actually handles interactive pop.
-@property (nonatomic, strong, readonly) UIPanGestureRecognizer *fd_fullscreenPopGestureRecognizer;
+@property (nonatomic, strong, readonly) UIPanGestureRecognizer *tq_fullscreenPopGestureRecognizer;
 
 /// A view controller is able to control navigation bar's appearance by itself,
 /// rather than a global way, checking "tq_prefersNavigationBarHidden" property.
 /// Default to YES, disable it if you don't want so.
-@property (nonatomic, assign) BOOL fd_viewControllerBasedNavigationBarAppearanceEnabled;
+@property (nonatomic, assign) BOOL tq_viewControllerBasedNavigationBarAppearanceEnabled;
 
 @end
 

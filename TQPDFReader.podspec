@@ -21,6 +21,4 @@ s.source       = { :git => "https://github.com/EragonTQ/TQPDFReader.git", :tag =
   s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
-  s.dependency "Masonry"
-  #s.dependency "FDFullscreenPopGesture"
  end

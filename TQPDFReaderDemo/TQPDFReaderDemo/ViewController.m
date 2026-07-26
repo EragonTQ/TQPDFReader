@@ -21,12 +21,15 @@
 
 - (IBAction)clickRemoteBtn:(id)sender
 {
-    NSString *path = @"https://edu100hqvideo.bs2cdn.98809.com/北京市基本概况（一）_3b8fa57ea22ae5acd5dd252904c8740337b810a5.pdf";
+    NSString *path = @"http://www.doe.zju.edu.cn/_upload/article/files/a0/22/595bdc2b4ca28f90f51ca3b3ffc5/45c3e922-550f-45a2-8602-64b9c202b33e.pdf";
     TQPDFScanViewController * pdfVC = [[UIStoryboard  storyboardWithName:@"TQPdfStoryboard" bundle:nil] instantiateViewControllerWithIdentifier:@"TQPDFScanViewController"];
     pdfVC.enableShare = YES;
     
     pdfVC.openErrorBlock = ^(NSError *error){
         
+    };
+    pdfVC.logBlock = ^(TQPDFLogEvent event, NSString * _Nonnull message, NSDictionary<NSString *,id> * _Nullable info) {
+        NSLog(@"TQPDFLogEvent:%@",message);
     };
     pdfVC.urlFile = path;
     //        pdfVC.resourseType = ResourceType_PDFReader_pdf;

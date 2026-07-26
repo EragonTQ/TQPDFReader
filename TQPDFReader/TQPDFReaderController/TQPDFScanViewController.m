@@ -15,7 +15,6 @@
 #import "TQPDFShareTools.h"
 #import "TQPDFOtherViewTools.h"
 #import <WebKit/WebKit.h>
-#import "Masonry/Masonry.h"
 #import <math.h>
 
 ///解决pdf 模糊问题
@@ -306,11 +305,13 @@ static NSInteger pageOffSetY = 0;
         [_rotateButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
         [_rotateButton addTarget:self action:@selector(clickRotateEvent:) forControlEvents:UIControlEventTouchUpInside];
         [self.view addSubview: _rotateButton];
-        [_rotateButton mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.bottom.mas_equalTo(-50);
-            make.right.mas_equalTo(-20);
-            make.width.height.mas_equalTo(40);
-        }];
+        _rotateButton.translatesAutoresizingMaskIntoConstraints = NO;
+        [NSLayoutConstraint activateConstraints:@[
+            [_rotateButton.bottomAnchor constraintEqualToAnchor:self.view.bottomAnchor constant:-50],
+            [_rotateButton.trailingAnchor constraintEqualToAnchor:self.view.trailingAnchor constant:-20],
+            [_rotateButton.widthAnchor constraintEqualToConstant:40],
+            [_rotateButton.heightAnchor constraintEqualToConstant:40]
+        ]];
     }
     return _rotateButton;
 }
@@ -400,14 +401,13 @@ static NSInteger pageOffSetY = 0;
         NSURL *url = [NSURL URLWithString:self.urlFile];
         [_webView loadRequest:[NSURLRequest requestWithURL:url]];
         [self.scrollView addSubview:_webView];
-        
-        
-        [_webView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.leading.mas_equalTo(0);
-            make.trailing.mas_equalTo(0);
-            make.top.mas_equalTo(0);
-            make.bottom.mas_equalTo(0);
-        }];
+        _webView.translatesAutoresizingMaskIntoConstraints = NO;
+        [NSLayoutConstraint activateConstraints:@[
+            [_webView.leadingAnchor constraintEqualToAnchor:self.scrollView.leadingAnchor],
+            [_webView.trailingAnchor constraintEqualToAnchor:self.scrollView.trailingAnchor],
+            [_webView.topAnchor constraintEqualToAnchor:self.scrollView.topAnchor],
+            [_webView.bottomAnchor constraintEqualToAnchor:self.scrollView.bottomAnchor]
+        ]];
     }
     
 }

@@ -60,11 +60,11 @@
 
 @end
 
-typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewController, BOOL animated);
+typedef void (^_TQViewControllerWillAppearInjectBlock)(UIViewController *viewController, BOOL animated);
 
 @interface UIViewController (TQFullscreenPopGesturePrivate)
 
-@property (nonatomic, copy) _FDViewControllerWillAppearInjectBlock fd_willAppearInjectBlock;
+@property (nonatomic, copy) _TQViewControllerWillAppearInjectBlock tq_willAppearInjectBlock;
 
 @end
 
@@ -73,28 +73,28 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 + (void)load
 {
     Method originalMethod = class_getInstanceMethod(self, @selector(viewWillAppear:));
-    Method swizzledMethod = class_getInstanceMethod(self, @selector(fd_viewWillAppear:));
+    Method swizzledMethod = class_getInstanceMethod(self, @selector(tq_viewWillAppear:));
     method_exchangeImplementations(originalMethod, swizzledMethod);
 }
 
-- (void)fd_viewWillAppear:(BOOL)animated
+- (void)tq_viewWillAppear:(BOOL)animated
 {
     // Forward to primary implementation.
-    [self fd_viewWillAppear:animated];
+    [self tq_viewWillAppear:animated];
     
-    if (self.fd_willAppearInjectBlock) {
-        self.fd_willAppearInjectBlock(self, animated);
+    if (self.tq_willAppearInjectBlock) {
+        self.tq_willAppearInjectBlock(self, animated);
     }
 }
 
-- (_FDViewControllerWillAppearInjectBlock)fd_willAppearInjectBlock
+- (_TQViewControllerWillAppearInjectBlock)tq_willAppearInjectBlock
 {
     return objc_getAssociatedObject(self, _cmd);
 }
 
-- (void)setFd_willAppearInjectBlock:(_FDViewControllerWillAppearInjectBlock)block
+- (void)setTq_willAppearInjectBlock:(_TQViewControllerWillAppearInjectBlock)block
 {
-    objc_setAssociatedObject(self, @selector(fd_willAppearInjectBlock), block, OBJC_ASSOCIATION_COPY_NONATOMIC);
+    objc_setAssociatedObject(self, @selector(tq_willAppearInjectBlock), block, OBJC_ASSOCIATION_COPY_NONATOMIC);
 }
 
 @end
@@ -105,43 +105,43 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
 {
     // Inject "-pushViewController:animated:"
     Method originalMethod = class_getInstanceMethod(self, @selector(pushViewController:animated:));
-    Method swizzledMethod = class_getInstanceMethod(self, @selector(fd_pushViewController:animated:));
+    Method swizzledMethod = class_getInstanceMethod(self, @selector(tq_pushViewController:animated:));
     method_exchangeImplementations(originalMethod, swizzledMethod);
 }
 
-- (void)fd_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
+- (void)tq_pushViewController:(UIViewController *)viewController animated:(BOOL)animated
 {
-    if (![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.fd_fullscreenPopGestureRecognizer]) {
+    if (![self.interactivePopGestureRecognizer.view.gestureRecognizers containsObject:self.tq_fullscreenPopGestureRecognizer]) {
         
         // Add our own gesture recognizer to where the onboard screen edge pan gesture recognizer is attached to.
-        [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.fd_fullscreenPopGestureRecognizer];
+        [self.interactivePopGestureRecognizer.view addGestureRecognizer:self.tq_fullscreenPopGestureRecognizer];
 
         // Forward the gesture events to the private handler of the onboard gesture recognizer.
         NSArray *internalTargets = [self.interactivePopGestureRecognizer valueForKey:@"targets"];
         id internalTarget = [internalTargets.firstObject valueForKey:@"target"];
         SEL internalAction = NSSelectorFromString(@"handleNavigationTransition:");
-        self.fd_fullscreenPopGestureRecognizer.delegate = self.fd_popGestureRecognizerDelegate;
-        [self.fd_fullscreenPopGestureRecognizer addTarget:internalTarget action:internalAction];
+        self.tq_fullscreenPopGestureRecognizer.delegate = self.tq_popGestureRecognizerDelegate;
+        [self.tq_fullscreenPopGestureRecognizer addTarget:internalTarget action:internalAction];
 
         // Disable the onboard gesture recognizer.
         self.interactivePopGestureRecognizer.enabled = NO;
     }
     
     // Handle perferred navigation bar appearance.
-    [self fd_setupViewControllerBasedNavigationBarAppearanceIfNeeded:viewController];
+    [self tq_setupViewControllerBasedNavigationBarAppearanceIfNeeded:viewController];
     
     // Forward to primary implementation.
-    [self fd_pushViewController:viewController animated:animated];
+    [self tq_pushViewController:viewController animated:animated];
 }
 
-- (void)fd_setupViewControllerBasedNavigationBarAppearanceIfNeeded:(UIViewController *)appearingViewController
+- (void)tq_setupViewControllerBasedNavigationBarAppearanceIfNeeded:(UIViewController *)appearingViewController
 {
-    if (!self.fd_viewControllerBasedNavigationBarAppearanceEnabled) {
+    if (!self.tq_viewControllerBasedNavigationBarAppearanceEnabled) {
         return;
     }
     
     __weak typeof(self) weakSelf = self;
-    _FDViewControllerWillAppearInjectBlock block = ^(UIViewController *viewController, BOOL animated) {
+    _TQViewControllerWillAppearInjectBlock block = ^(UIViewController *viewController, BOOL animated) {
         __strong typeof(weakSelf) strongSelf = weakSelf;
         if (strongSelf) {
             [strongSelf setNavigationBarHidden:viewController.tq_prefersNavigationBarHidden animated:animated];
@@ -151,14 +151,14 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     // Setup will appear inject block to appearing view controller.
     // Setup disappearing view controller as well, because not every view controller is added into
     // stack by pushing, maybe by "-setViewControllers:".
-    appearingViewController.fd_willAppearInjectBlock = block;
+    appearingViewController.tq_willAppearInjectBlock = block;
     UIViewController *disappearingViewController = self.viewControllers.lastObject;
-    if (disappearingViewController && !disappearingViewController.fd_willAppearInjectBlock) {
-        disappearingViewController.fd_willAppearInjectBlock = block;
+    if (disappearingViewController && !disappearingViewController.tq_willAppearInjectBlock) {
+        disappearingViewController.tq_willAppearInjectBlock = block;
     }
 }
 
-- (_TQFullscreenPopGestureRecognizerDelegate *)fd_popGestureRecognizerDelegate
+- (_TQFullscreenPopGestureRecognizerDelegate *)tq_popGestureRecognizerDelegate
 {
     _TQFullscreenPopGestureRecognizerDelegate *delegate = objc_getAssociatedObject(self, _cmd);
 
@@ -171,7 +171,7 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return delegate;
 }
 
-- (UIPanGestureRecognizer *)fd_fullscreenPopGestureRecognizer
+- (UIPanGestureRecognizer *)tq_fullscreenPopGestureRecognizer
 {
     UIPanGestureRecognizer *panGestureRecognizer = objc_getAssociatedObject(self, _cmd);
 
@@ -184,19 +184,19 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return panGestureRecognizer;
 }
 
-- (BOOL)fd_viewControllerBasedNavigationBarAppearanceEnabled
+- (BOOL)tq_viewControllerBasedNavigationBarAppearanceEnabled
 {
     NSNumber *number = objc_getAssociatedObject(self, _cmd);
     if (number) {
         return number.boolValue;
     }
-    self.fd_viewControllerBasedNavigationBarAppearanceEnabled = YES;
+    self.tq_viewControllerBasedNavigationBarAppearanceEnabled = YES;
     return YES;
 }
 
-- (void)setFd_viewControllerBasedNavigationBarAppearanceEnabled:(BOOL)enabled
+- (void)setTq_viewControllerBasedNavigationBarAppearanceEnabled:(BOOL)enabled
 {
-    SEL key = @selector(fd_viewControllerBasedNavigationBarAppearanceEnabled);
+    SEL key = @selector(tq_viewControllerBasedNavigationBarAppearanceEnabled);
     objc_setAssociatedObject(self, key, @(enabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
 
@@ -209,7 +209,7 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_interactivePopDisabled:(BOOL)disabled
+- (void)setTq_interactivePopDisabled:(BOOL)disabled
 {
     objc_setAssociatedObject(self, @selector(tq_interactivePopDisabled), @(disabled), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
@@ -219,7 +219,7 @@ typedef void (^_FDViewControllerWillAppearInjectBlock)(UIViewController *viewCon
     return [objc_getAssociatedObject(self, _cmd) boolValue];
 }
 
-- (void)setFd_prefersNavigationBarHidden:(BOOL)hidden
+- (void)setTq_prefersNavigationBarHidden:(BOOL)hidden
 {
     objc_setAssociatedObject(self, @selector(tq_prefersNavigationBarHidden), @(hidden), OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 }
