@@ -15,15 +15,15 @@ Pod::Spec.new do |s|
   s.author       = { "litianqi" => "871651575@qq.com" }
   s.platform     = :ios, "8.0"
 s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
-#s.source       = { :git => "https://github.com/TianQiLi/TQPDFReader.git", :tag => "#{s.version}" }
+#s.source       = { :git => "https://github.com/EragonTQ/TQPDFReader.git", :tag => "#{s.version}" }
 
  s.source = {:path => "."}
   s.source_files  = "TQPDFReader/**/*.{h,m}"
 
-  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"
+  s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle","TQPDFReader/Other"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
-  #s.dependency "CocoaLumberjack"
+  
   s.dependency "Masonry"
-  s.dependency "FDFullscreenPopGesture"
+  #s.dependency "FDFullscreenPopGesture"
  end

@@ -10,7 +10,7 @@
 #import "TQPDFDocumentTools.h"
 #import "TQDownLoadPanelViewController.h"
 #import "TQPDFReaderDownloadManager.h"
-#import "UINavigationController+FDFullscreenPopGesture.h"
+#import "UINavigationController+TQFullscreenPopGesture.h"
 #import "TQPDFReader.h"
 #import "TQPDFShareTools.h"
 #import "TQPDFOtherViewTools.h"
@@ -430,7 +430,7 @@ static NSInteger pageOffSetY = 0;
 - (void)viewWillDisappear:(BOOL)animated
 {
     [super viewWillDisappear:animated];
-    self.fd_interactivePopDisabled = NO;
+    self.tq_interactivePopDisabled = NO;
     pageOffSetY = _collection.contentOffset.y;
     [TQPDFReaderFileManager setFileScanPercent:@(pageOffSetY) withUrl:self.urlFile currentPage:_currentPage];
     
@@ -464,7 +464,7 @@ static NSInteger pageOffSetY = 0;
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    self.fd_interactivePopDisabled = YES;
+    self.tq_interactivePopDisabled = YES;
     if (self.customTitleLabel) {
          [self.navigationItem setTitleView:self.customTitleLabel];
     }

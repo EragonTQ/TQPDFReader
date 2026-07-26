@@ -1,9 +1,7 @@
 PODS:
-  - FDFullscreenPopGesture (1.1)
   - Masonry (1.1.0)
   - SVProgressHUD (2.2.5)
   - TQPDFReader-local (0.0.5):
-    - FDFullscreenPopGesture
     - Masonry
     - SVProgressHUD
 
@@ -13,7 +11,6 @@ DEPENDENCIES:
 
 SPEC REPOS:
   trunk:
-    - FDFullscreenPopGesture
     - Masonry
     - SVProgressHUD
 
@@ -22,10 +19,9 @@ EXTERNAL SOURCES:
     :path: "./../"
 
 SPEC CHECKSUMS:
-  FDFullscreenPopGesture: a8a620179e3d9c40e8e00256dcee1c1a27c6d0f0
   Masonry: 678fab65091a9290e40e2832a55e7ab731aad201
   SVProgressHUD: 1428aafac632c1f86f62aa4243ec12008d7a51d6
-  TQPDFReader-local: a9b4bfa6fb4f20de39820cd39b6719d9b8dd87b5
+  TQPDFReader-local: 5b5f3979607340219639f9168ebea3e668227d32
 
 PODFILE CHECKSUM: f39ae4a99e1428a2d636c16b95194252d90c0e03
 

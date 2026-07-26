@@ -8,7 +8,7 @@
 
 Pod::Spec.new do |s|
   s.name         = "TQPDFReader"
-  s.version      = "1.0.3"
+  s.version      = "1.0.4"
   s.summary      = "pdf 阅读器."
   s.homepage     = "https://github.com/TianQiLi/TQPDFReader"
   s.license      = "MIT"
@@ -21,7 +21,6 @@ s.source       = { :git => "https://github.com/EragonTQ/TQPDFReader.git", :tag =
   s.resources = "TQPDFReader/PDFReaderXib/*.storyboard","TQPDFReader/Resources/*.bundle"
   s.requires_arc = true
   s.dependency "SVProgressHUD"
- # s.dependency "CocoaLumberjack"
   s.dependency "Masonry"
-  s.dependency "FDFullscreenPopGesture"
+  #s.dependency "FDFullscreenPopGesture"
  end
