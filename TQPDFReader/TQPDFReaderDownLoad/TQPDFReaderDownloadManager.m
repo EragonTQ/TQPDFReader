@@ -362,7 +362,21 @@ didCompleteWithError:(nullable NSError *)error
         }
     } @catch (NSException *exception) {
         NSLog(@"<ResumeDataCorrect> catch exp %@", exception);
-        NSString *msg = [NSString stringWithFormat:@"<ResumeDataCorrect> catch exp@",exception];        
+       
+        NSString *name = exception.name;
+        NSString *reason = exception.reason;
+        NSArray *stackSymbols = exception.callStackSymbols; // 调用栈字符串数组
+        
+        // 拼接完整日志文本
+        NSMutableString *exceptionText = [NSMutableString string];
+        [exceptionText appendFormat:@"Exception Name: %@\n", name];
+        [exceptionText appendFormat:@"Reason: %@\n", reason];
+        [exceptionText appendString:@"Call Stack:\n"];
+        for (NSString *symbol in stackSymbols) {
+            [exceptionText appendFormat:@"%@\n", symbol];
+        }
+        NSString *msg = [NSString stringWithFormat:@"<ResumeDataCorrect> catch exp%@",exceptionText];
+        
         [self.downLoadDelegate downLoadFinished:@""  error:[NSError errorWithDomain:msg code:-1 userInfo:nil]];
     } @finally {
         // Reencode archived object
