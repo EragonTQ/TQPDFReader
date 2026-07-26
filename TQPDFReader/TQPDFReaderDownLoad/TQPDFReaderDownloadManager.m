@@ -63,7 +63,8 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
     static dispatch_once_t onceToken ;
     dispatch_once(&onceToken, ^{
         NSURLSessionConfiguration *config = [NSURLSessionConfiguration backgroundSessionConfigurationWithIdentifier:DownLoadManagerIdentifier];
-        config.discretionary =YES;
+        config.discretionary = NO;
+        config.allowsCellularAccess = YES;
         config.HTTPMaximumConnectionsPerHost =20;
         backgroundSession = [NSURLSession sessionWithConfiguration:config delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     });
@@ -78,6 +79,7 @@ static NSString * const DownLoadManagerIdentifier = @"DownLoadManagerDemo";
         for (NSURLSessionDownloadTask *task in downloadTasks) {
             if ([task.taskDescription isEqualToString:downLoadTaskDescription]) {
                 isExistTask = YES;
+                [task resume];
             }
             else {
                 [task cancelByProducingResumeData:^(NSData * _Nullable resumeData) {
