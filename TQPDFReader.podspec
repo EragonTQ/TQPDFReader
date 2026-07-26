@@ -8,12 +8,12 @@
 
 Pod::Spec.new do |s|
   s.name         = "TQPDFReader"
-  s.version      = "1.0.2"
+  s.version      = "1.0.3"
   s.summary      = "pdf 阅读器."
   s.homepage     = "https://github.com/TianQiLi/TQPDFReader"
   s.license      = "MIT"
   s.author       = { "litianqi" => "871651575@qq.com" }
-  s.platform     = :ios, "11.0"
+  s.platform     = :ios, "12.0"
 s.frameworks = "UIKit", "Foundation" , "CoreGraphics"
 s.source       = { :git => "https://github.com/EragonTQ/TQPDFReader.git", :tag => "#{s.version}" }
   s.source_files  = "TQPDFReader/**/*.{h,m}"
